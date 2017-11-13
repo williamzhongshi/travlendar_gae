@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css" /> 
+    <link rel="stylesheet" href="Content/css/jquery.datetimepicker.min.css" />
+</head>
+<body>
+
+     <script src="Content/js/jquery.js" ></script>
+    <script src="Content/js/jquery.datetimepicker.full.js"></script>
+
+
+
+    <form id="frmEvent" method="post" >
+
+        <div class="container">
+
+            <!-- Name-->
+            <div class="form">Event Name</div>
+            <div class="form"><input type="text" id="txtEventName"  name="txtEventName"/></div>
+
+            <!-- Location -->
+            <div class="form">Location</div>
+            <div class="form"><input type="text" id="txtAddress" name="txtAddress" style="width: 500px" />
+            </div>
+
+            <!-- Start Day/Time-->
+            <div class="form">Start Time</div>
+            <div class="form"><input type="text" id="eventstart" name="eventstart"/>
+            </div>
+
+            <!-- End Day/Time-->
+            <div class="form">End Time</div>
+            <div class="form"><input type="text" id="eventend" name="eventend"/> </div>
+
+            <!-- Travel Options-->
+            <div class="form">Start Time</div>
+            <div class="form">
+                <input type="radio" name="travel" value="Car" checked="checked" />Car 
+                <input type="radio" name="travel" value="Bike" />Bike
+                <input type="radio" name="travel" value="Walk" />Walk
+                <input type="radio" name="travel" value="Public Transport" />Public Transport  
+            </div>
+
+
+            <div class="form"><input type="submit" value="Button" />
+                <!--onclick="SendJSON()" /></div>-->
+        </div>
+
+    </form>
+    
+    <script type="text/javascript">
+        $("#eventstart").datetimepicker();
+ 
+        $("#eventend").datetimepicker();
+        function SendJSON() {
+            var validation = false;
+            validation = validateForm();
+            if (validation == true) {
+                var name = $("#txtEventName").val();
+                var address = $("#txtAddress").val();
+                var dateStartValue = $("#eventstart").datetimepicker('getValue');
+                var dateEndValue = $("#eventend").datetimepicker('getValue');
+                var travel = $('input[name=travel]:checked').val();
+                var jsonString = '{ name: "' + name + '", address: "' + address + '", eventStart: "' + dateStartValue + '", eventEnd: "' + dateEndValue + '",travel: "' + travel + '"}';
+                alert(jsonString);
+            }
+            else return false;
+        }
+        function validateForm() {
+            var dateStartValue = $("#eventstart").datetimepicker('getValue');
+            var today = new Date();
+            var dateEndValue = $("#eventend").datetimepicker('getValue');
+            if ($("#txtEventName").val() == "") {
+                alert("Please enter an Event Name");
+                $("#txtEventName").focus();
+                return false;
+            }
+            if ($("#txtAddress").val() == "") {
+                alert("Please enter an Address");
+                $("#txtAddress").focus();
+                return false;
+            }
+            if (isNaN(dateStartValue) == false) {
+                var d = new Date(dateStartValue);
+            }
+            else {
+                alert("Please enter a vaid start time");
+                return false;
+            }
+            if (isNaN(dateEndValue) == false) {
+                var e = new Date(dateEndValue);
+            }
+            else {
+                alert("Please enter a vaid end time");
+                return false;
+            }
+            //Check if the start time is past date/time
+            if (d.getTime() < today.getTime()) {
+                alert("That's not a valid value! Please enter a future time.");
+                return false;
+            }
+            if (d.getTime() > e.getTime()) {
+                alert("The end time cannot be lesser than the start time");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <script>
+        function autoCompleteAddress() {
+            var input = document.getElementById("txtAddress");
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHpOedQQqh_X463UByOLfPMRYqmLSUBn4&libraries=places&callback=autoCompleteAddress">
+    </script>
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>

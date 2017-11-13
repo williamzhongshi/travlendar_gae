@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head >
+    <title>Mini Project</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="Content/css/Site.css" />
+
+    <!-- Scripts -->
+     <script type="text/javascript" src="Content/js/bootstrap.min.js"></script>   
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- End of Scripts -->
+</head>
+<body>
+
+  <!-- Header area begins -->
+        <header>
+        <div class="container-fluid .col-md-offset-*">
+            <div>
+                <h1>
+                    Connex.us
+                </h1>
+
+            </div>
+           </div>
+    </header>
+   <!-- End of Header area -->
+
+    <div class="container-fluid jumbotron .col-md-offset-* " >
+        <div class="main-links">
+            <a href="Management.html">Manage</a>
+            <a href="#" >Create</a>
+            <a href="AllStreams.html" >View</a>
+            <a href="SearchStream.html" >Search</a>
+            <a href="Trending.html">Trending</a>
+             <a href="#">Social</a>
+        </div>
+    </div>
+
+
+
+    <div class="container-fluid jumbotron">
+        <P class="col-lg-11" >Create New Stream:-</P>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-6 control-label" for="txtName">Name your stream</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="txtName"  placeholder="Name your stream" />
+                    </div>
+                </div>
+            
+ 
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-6 control-label" for="txtEmailList">Add Subscribers</label>
+                <div class="col-md-6">
+                        <textarea class="input" rows="10" cols="10" id="txtEmailList"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+                        &nbsp;
+                </div>
+                <div class="col-md-6">
+                         <textarea class="input" rows="10" cols="10" id="txtMsg"></textarea>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-6 control-label" for="txtEmailList">Tag your stream</label>
+                <div class="col-md-6">
+                        <textarea class="input" rows="10" cols="10" id="txtTag"></textarea>
+                </div>
+            </div>
+
+             <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-6 control-label" for="txtName">URL(optional)</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="txturl"  placeholder="Optiional URL" />
+                    </div>
+                </div>
+            
+    
+            <div class="col-md-12">
+                <input type="button" value="Create New Stream" id="btnCreate" />
+            </div>
+        </div>                
+
+
+
+
+      
+</body>
+</html>
+

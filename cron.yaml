@@ -1,0 +1,12 @@
+cron:
+- description: min5 summary job
+  url: /min5_cron
+  schedule: every 5 mins
+
+- description: hourly summary job
+  url: /hour1_cron
+  schedule: every 1 hours
+
+- description: daily summary job
+  url: /hour24_cron
+  schedule: every 24 hours

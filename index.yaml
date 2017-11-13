@@ -1,0 +1,13 @@
+indexes:
+
+- kind: Trending_stream_entity
+  properties:
+  - name: ts
+    direction: desc
+  - name: rank
+
+- kind: Photo
+  ancestor: yes
+  properties:
+  - name: uploaddate
+    direction: desc

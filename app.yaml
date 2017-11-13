@@ -1,0 +1,37 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# [START handlers]
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /Content
+  static_dir: Content
+
+
+- url: /
+  script: login.app
+
+- url: /create_event
+  script: create_event.app
+
+
+#- url: /blobstore/serviece
+#  script: blob_store_test.app
+# [END handlers]
+
+# [START libraries]
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+- name: pycrypto
+  version: latest
+# [END libraries]
