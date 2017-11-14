@@ -18,6 +18,9 @@ handlers:
 - url: /
   script: login.app
 
+- url: /auth
+  script: login.app
+
 - url: /create_event
   script: create_event.app
 

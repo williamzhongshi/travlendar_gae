@@ -23,20 +23,41 @@ import os
 import urllib
 import logging
 import cloudstorage as gcs
+import sys
 
 # from oauth2client import client
 # from oauth2client.contrib import appengine
 # from googleapiclient import discovery
 
 from entities_def import User
+from entities_def import CredentialsM
 
 from google.appengine.api import memcache
 from google.appengine.api import app_identity, mail, users
 from google.appengine.ext import ndb
 from google.appengine.api import urlfetch
+from oauth2client.client import AccessTokenCredentials
 
 import jinja2
 import webapp2
+
+from apiclient import discovery
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
+from oauth2client.file import Storage
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.service_account import ServiceAccountCredentials
+from apiclient.discovery import build
+
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import httplib2
+import os
+import datetime
+
+from google.appengine.api import users
+from oauth2client.contrib.appengine import StorageByKeyName
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -49,52 +70,111 @@ MAPS_KEY = 'AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg'
 
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 
-# def make_signed_url(domain, path, query, client_id, key):
-#   query = [(x.encode('utf-8'), y.encode('utf-8')) for x, y in query]
-#   query.append(('client', client_id))
-#   path = u'%s?%s' % (path, urllib.urlencode(query))
-#   sig = base64.urlsafe_b64encode(hmac.new(key, path, hashlib.sha1).digest())
-#   return sig, u'http://%s%s&signature=%s' % (domain, path, sig)
-
-
-
-
-
-    #for item in response
-
-
-# def get_geocode(address):
-#     def get_geocode(address):
-#
-#     # sig, url = make_signed_url('maps.google.com', '/maps/api/geocode/json', [
-#     #   (u'address', address),
-#     #   (u'sensor', u'false'),
-#     # ], MAPS_CLIENT_ID, MAPS_KEY)
-#     url="https://maps.googleapis.com/maps/api/distancematrix/json?origins=Zilker+park&destinations=ut+austin&departure_time=1541202457&traffic_model=best_guess&key=AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg"
-#     logging.info("url %s " % url)
-#
-#     response = json.loads(urlfetch.fetch(url).content)
-#     logging.info("%s" % response)
-#     if response['status'] == 'OVER_QUERY_LIMIT':
-#         raise OverQuotaError()
-#     elif response['status'] == 'ZERO_RESULTS':
-#         result = None
-#     elif response['status'] == 'OK':
-#             # result = decode_geocode_response(response['results'][0])
-#         logging.info("%s" % response['results'][0])
-#         result = response['results'][0]
-#     else:
-#         raise Exception(response)
-#     return result
-
-
+flow = flow_from_clientsecrets('./client_secret.json', scope='https://www.googleapis.com/auth/calendar', redirect_uri='http://localhost:8080/auth')
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
+        user = users.get_current_user()
+        auth_uri = flow.step1_get_authorize_url()
+
+        cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
+
+        if len(cred_list) != 0:
+            cred = cred_list[0]
+            logging.info("use old cred" + str(cred))
+            token = cred.access_token
+            credentials = AccessTokenCredentials(token, 'user-agent-value')
+
+
+            http = credentials.authorize(httplib2.Http())
+            service = discovery.build('calendar', 'v3', http=http)
+
+            now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+            print('Getting the upcoming 10 events')
+            eventsResult = service.events().list(
+                    calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+                    orderBy='startTime').execute()
+            events = eventsResult.get('items', [])
+
+            if not events:
+                logging.info('No upcoming events found.')
+            for event in events:
+                start = event['start'].get('dateTime', event['start'].get('date'))
+                logging.info(start, event['summary'])
+
+
+
+        if user:
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+            target_user = User.query(User.email == user.email()).fetch()
+
+            if len(target_user) == 0:
+                logging.info("User not found, creating User entity %s" % users.get_current_user().email())
+                logging.info("%s", dir(user))
+                user_obj = User()
+                user_obj.username = user.email()  # not sure what this is for
+                user_obj.email = user.email()
+                user_obj.put()
+
+
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login Using Google'
+
+
+        template_values = {
+            'user': user,
+            'url': url,
+            'url_linktext': url_linktext,
+            'auth_url' : auth_uri
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('Login.html')
+        self.response.write(template.render(template_values))
+
+class AuthPage(webapp2.RequestHandler):
+    def get(self):
+        code = self.request.get('code')
+        logging.info('code:' + str(code))
 
         user = users.get_current_user()
-        logging.info("*************user:" + str(user))
+        
+
+        cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
+        if len(cred_list) == 0:
+            logging.info("no cred in ndb")
+            cred = CredentialsM()
+            credentials = flow.step2_exchange(code)
+            logging.info("dumping:" + credentials.access_token)
+            cred.user_email = user.email()
+            cred.access_token = credentials.access_token
+            cred.put()
+            logging.info("cred:" + str(credentials))
+        else:
+            cred = cred_list[0]
+            logging.info("use old cred" + str(cred))
+            credentials = AccessTokenCredentials(cred.access_token, 'user-agent-value')
+
+        logging.info("cred after:" + str(credentials))
+
+        http = credentials.authorize(httplib2.Http())
+        service = discovery.build('calendar', 'v3', http=http)
+
+        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+        print('Getting the upcoming 10 events')
+        eventsResult = service.events().list(
+                calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+                orderBy='startTime').execute()
+        events = eventsResult.get('items', [])
+
+        if not events:
+            logging.info('No upcoming events found.')
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            logging.info(start, event['summary'])
+
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -115,78 +195,15 @@ class MainPage(webapp2.RequestHandler):
             'user': user,
             'url': url,
             'url_linktext': url_linktext,
-            # 'url': decorator.authorize_url(),
-            # 'has_credentials': decorator.has_credentials()
         }
 
         template = JINJA_ENVIRONMENT.get_template('Login.html')
         self.response.write(template.render(template_values))
 
-    # def post(self):
-    #     # template_values = {
-    #     #     'in_email': user,
-    #     #     # 'greetings': greetings,
-    #     #     # 'guestbook_name': urllib.quote_plus(guestbook_name),
-    #     #     'url': url,
-    #     #     'url_linktext': url_linktext,
-    #     # }
-    #     input_email = self.request.get('txtUserName')
-
-# class AboutHandler(webapp2.RequestHandler):
-#
-#   @decorator.oauth_required
-#   def get(self):
-#     try:
-#       http = decorator.http()
-#       user = service.people().get(userId='me').execute(http=http)
-#       text = 'Hello, %s!' % user['displayName']
-#
-#       template = JINJA_ENVIRONMENT.get_template('welcome.html')
-#       self.response.write(template.render({'text': text }))
-#     except client.AccessTokenRefreshError:
-#       self.redirect('/')
-
-
-# [END main_page]
-
-
-# [START guestbook]
-# class Guestbook(webapp2.RequestHandler):
-#
-#     def post(self):
-#         # We set the same parent key on the 'Greeting' to ensure each
-#         # Greeting is in the same entity group. Queries across the
-#         # single entity group will be consistent. However, the write
-#         # rate to a single entity group should be limited to
-#         # ~1/second.
-#         guestbook_name = self.request.get('guestbook_name',
-#                                           DEFAULT_GUESTBOOK_NAME)
-#         greeting = Greeting(parent=guestbook_key(guestbook_name))
-#
-#         if users.get_current_user():
-#             greeting.author = Author(
-#                     identity=users.get_current_user().user_id(),
-#                     email=users.get_current_user().email())
-#         #test email
-#         user_address = "williamzhongshi@gmail.com"
-#
-#         greeting.content = self.request.get('content')
-#         # mail.send_mail(sender=user_address, to="williamzhongshi@gmail.com", subject="AppEngine Email Test",
-#         #                body=greeting.content)
-#
-#         greeting.put()
-#
-#         query_params = {'guestbook_name': guestbook_name}
-#         self.redirect('/?' + urllib.urlencode(query_params))
-# # [END guestbook]
-
 
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    # ('/sign', Guestbook),
-    #('/about/, AboutHandler'),
-    #(decorator.callback_path, decorator.callback_handler()),
-
+    ('/auth', AuthPage)
 ], debug=True)
 # [END app]

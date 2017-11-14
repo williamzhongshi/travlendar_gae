@@ -1,0 +1,3 @@
+google-api-python-client==1.1
+oauth2client==1.5
+httplib2==0.8
