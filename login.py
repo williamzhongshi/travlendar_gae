@@ -77,34 +77,6 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
         auth_uri = flow.step1_get_authorize_url()
-
-        cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
-
-        if len(cred_list) != 0:
-            cred = cred_list[0]
-            logging.info("use old cred" + str(cred))
-            token = cred.access_token
-            credentials = AccessTokenCredentials(token, 'user-agent-value')
-
-
-            http = credentials.authorize(httplib2.Http())
-            service = discovery.build('calendar', 'v3', http=http)
-
-            now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-            print('Getting the upcoming 10 events')
-            eventsResult = service.events().list(
-                    calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
-                    orderBy='startTime').execute()
-            events = eventsResult.get('items', [])
-
-            if not events:
-                logging.info('No upcoming events found.')
-            for event in events:
-                start = event['start'].get('dateTime', event['start'].get('date'))
-                logging.info(start, event['summary'])
-
-
-
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -119,9 +91,37 @@ class MainPage(webapp2.RequestHandler):
                 user_obj.put()
 
 
+
+            cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
+
+            if len(cred_list) != 0:
+                cred = cred_list[0]
+                logging.info("use old cred" + str(cred))
+                token = cred.access_token
+                credentials = AccessTokenCredentials(token, 'user-agent-value')
+
+
+                http = credentials.authorize(httplib2.Http())
+                service = discovery.build('calendar', 'v3', http=http)
+
+                now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+                print('Getting the upcoming 10 events')
+                eventsResult = service.events().list(
+                        calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+                        orderBy='startTime').execute()
+                events = eventsResult.get('items', [])
+
+                if not events:
+                    logging.info('No upcoming events found.')
+                for event in events:
+                    start = event['start'].get('dateTime', event['start'].get('date'))
+                    logging.info("Found event: %s %s" % (start, event['summary']))
+
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login Using Google'
+
+
 
 
         template_values = {
