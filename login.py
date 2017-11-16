@@ -41,15 +41,14 @@ from oauth2client.client import AccessTokenCredentials
 import jinja2
 import webapp2
 
-from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
-from oauth2client.file import Storage
 from oauth2client.file import Storage
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.service_account import ServiceAccountCredentials
 from apiclient.discovery import build
 
+from apiclient import discovery
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import httplib2
@@ -76,7 +75,10 @@ class MainPage(webapp2.RequestHandler):
 
     def get(self):
         user = users.get_current_user()
-        auth_uri = flow.step1_get_authorize_url()
+        flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('./client_secret.json' , scopes=['https://www.googleapis.com/auth/calendar'])
+        flow.redirect_uri='http://localhost:8080/auth'
+        #auth_uri = flow.step1_get_authorize_url()
+        auth_uri, state = flow.authorization_url(access_type='offline',include_granted_scopes='true')
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -101,6 +103,7 @@ class MainPage(webapp2.RequestHandler):
                 credentials = AccessTokenCredentials(token, 'user-agent-value')
 
                 http = credentials.authorize(httplib2.Http())
+                #credentials.refresh(http)
                 service = discovery.build('calendar', 'v3', http=http)
 
                 now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
