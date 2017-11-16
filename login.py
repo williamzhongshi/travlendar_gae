@@ -100,7 +100,6 @@ class MainPage(webapp2.RequestHandler):
                 token = cred.access_token
                 credentials = AccessTokenCredentials(token, 'user-agent-value')
 
-
                 http = credentials.authorize(httplib2.Http())
                 service = discovery.build('calendar', 'v3', http=http)
 
@@ -116,6 +115,35 @@ class MainPage(webapp2.RequestHandler):
                 for event in events:
                     start = event['start'].get('dateTime', event['start'].get('date'))
                     logging.info("Found event: %s %s" % (start, event['summary']))
+
+                # Refer to the Python quickstart on how to setup the environment:
+                # https://developers.google.com/google-apps/calendar/quickstart/python
+                # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
+                # stored credentials.
+
+                event = {
+                    'summary': 'New Added Event',
+                    'location': 'UT Austin',
+                    'description': 'test',
+                    'start': {
+                        'dateTime': '2017-11-15T11:00:00-07:00',
+                        'timeZone': 'America/Chicago',
+                    },
+                    'end': {
+                        'dateTime': '2017-11-15T12:00:00-07:00',
+                        'timeZone': 'America/Chicago',
+                    },
+                    'reminders': {
+                        'useDefault': False,
+                        'overrides': [
+                            {'method': 'email', 'minutes': 24 * 60},
+                            {'method': 'popup', 'minutes': 10},
+                        ],
+                    },
+                }
+
+                event = service.events().insert(calendarId='primary', body=event).execute()
+                print 'Event created: %s' % (event.get('htmlLink'))
 
         else:
             url = users.create_login_url(self.request.uri)
@@ -173,7 +201,7 @@ class AuthPage(webapp2.RequestHandler):
             logging.info('No upcoming events found.')
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
-            logging.info(start, event['summary'])
+            logging.info("Found event: %s %s" % (start, event['summary']))
 
         if user:
             url = users.create_logout_url(self.request.uri)
