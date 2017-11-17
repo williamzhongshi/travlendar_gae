@@ -50,7 +50,7 @@ default_address = "UT Austin"
 
 class CreateEvent(webapp2.RequestHandler):
 
-    def get_estimated_time(self, origin_in, destination_in, arrival_time, transit_mode="car"):
+    def get_estimated_time(self, origin_in, destination_in, arrival_time, transit_mode="driving"):
         origin = origin_in.replace(" ", "+")
         destination = destination_in.replace(" ", "+")
 
