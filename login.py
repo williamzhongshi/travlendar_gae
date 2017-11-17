@@ -124,29 +124,6 @@ class MainPage(webapp2.RequestHandler):
                 # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
                 # stored credentials.
 
-                event = {
-                    'summary': 'New Added Event',
-                    'location': 'UT Austin',
-                    'description': 'test',
-                    'start': {
-                        'dateTime': '2017-11-15T11:00:00-07:00',
-                        'timeZone': 'America/Chicago',
-                    },
-                    'end': {
-                        'dateTime': '2017-11-15T12:00:00-07:00',
-                        'timeZone': 'America/Chicago',
-                    },
-                    'reminders': {
-                        'useDefault': False,
-                        'overrides': [
-                            {'method': 'email', 'minutes': 24 * 60},
-                            {'method': 'popup', 'minutes': 10},
-                        ],
-                    },
-                }
-
-                event = service.events().insert(calendarId='primary', body=event).execute()
-                print 'Event created: %s' % (event.get('htmlLink'))
 
         else:
             url = users.create_login_url(self.request.uri)

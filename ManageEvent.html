@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Travlendar</title>
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css" /> 
+    <link rel="stylesheet" href="Content/css/bootstrap.css" /> 
+    <link rel="stylesheet" href="Content/css/jquery.datetimepicker.min.css" />
+</head>
+<body>
+    <script src="Content/js/jquery.js" ></script>
+    <script src="Content/js/jquery.datetimepicker.full.js"></script>
+
+        <!-- Begin Header Content -->    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div >
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><img src="Content/img/calendar-icon.png" height="50px" width="50px" /></li>
+                    <li><h1 class="navbar-inverse navbar-text">Travlendar</h1></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    <li><a href="#" id="1"><span class="glyphicon glyphicon-log-in "></span>Sign In</a></li>
+                    
+                    <li><a href="#" id="2"><span class="glyphicon glyphicon-log-out "></span>Sign Out</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="flex-align:center">
+        <ul class="nav navbar-nav">
+                    <li><a href="DisplayCalendar.html" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a></li>
+                    <li><a href="#" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a></li>
+                    
+                    <li><a href="CreateEvent.html" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a></li>
+                    
+                    <li><a href="UserPreferences.html" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a></li>
+                    <li><a href="#" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a></li>
+                </ul>
+        
+    </div>
+    <div class="container-fluid"><h5 style="text-align:left">Manage Events</h5></div>
+    <hr />
+    <!-- End of Header Content -->
+
+    <!-- Begin Body Content  -->
+
+        <div class="container   pull-left">
+          <div class="modal-lg " >
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="addModalLabel">Manage Events</h3>
+                </div>
+                <div class="modal-body">
+                    <!-- First row-->
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#"> Select </a></div>
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#"> Delete </a></div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Event Name </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Date/Time </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Location </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Travel Option</div>
+                    <!-- Second Row -->
+
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#">Select </a></div>
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#"> Delete </a></div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Event Name </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Date/Time </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Location </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Travel Option</div>
+
+                </div>
+                <div class="modal-footer">&nbsp;</div>
+            </div>
+      </div>
+
+    <form id="frmEvent" method="post" >
+    <div id="createEvent"  class=" col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+        <div class="modal-dialog" >
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="H1">Modify Event Details</h3>
+                </div>
+ 
+             <div class="modal-body">
+            <!-- Name-->
+            <div class="form">Event Name</div>
+            <div class="form"><input type="text" id="txtEventName" /></div>
+            
+            <!-- Location -->
+            <div class="form">Location</div>
+            <div class="form"><input type="text" id="txtAddress" style="width: 500px" />
+            </div>
+
+            <!-- Start Day/Time-->
+            <div class="form">Start Time</div>
+            <div class="form"><input type="text" id="eventstart" />                               
+            </div>
+
+            <!-- End Day/Time-->
+            <div class="form">End Time</div>
+            <div class="form"><input type="text" id="eventend" /></div>
+
+            <!-- Travel Options-->
+            <div class="form">Travelling By</div>
+            <div class="form">
+                <input type="radio" name="travel" value="Car" checked="checked" />Car 
+                <input type="radio" name="travel" value="Bike" />Bike
+                <input type="radio" name="travel" value="Walk" />Walk
+                <input type="radio" name="travel" value="Public Transport" />Public Transport  
+            </div>
+            </div>
+            </div>
+        </div>
+      </div>
+
+        <div class="col-md-12 col-centered center-block"><input type="button" value="Modify Event"  class="button orange float-right" onclick="SendJSON()" /></div>
+        
+
+    <!-- End of Body Content -->
+    </form>
+    </div>
+    <!-- End of Main Content -->
+
+<!-- Begin Footer -->
+
+
+<div class="footer">
+
+        <p>&copy; 2017 - Travlender</p>
+</div>
+
+<!-- End of Footer -->
+
+
+    <script type="text/javascript">
+        $("#eventstart").datetimepicker();
+
+        $("#eventend").datetimepicker();
+
+        function SendJSON() {
+
+            var validation = false;
+            validation = validateForm();
+
+            if (validation == true) {
+                var name = $("#txtEventName").val();
+                var address = $("#txtAddress").val();
+                var dateStartValue = $("#eventstart").datetimepicker('getValue');
+                var dateEndValue = $("#eventend").datetimepicker('getValue');
+                var travel = $('input[name=travel]:checked').val();
+
+                var jsonString = '{ name: "' + name + '", address: "' + address + '", eventStart: "' + dateStartValue + '", eventEnd: "' + dateEndValue + '",travel: "' + travel + '"}';
+                alert(jsonString);
+
+            }
+            else return false;
+
+        }
+
+        function validateForm() {
+            var dateStartValue = $("#eventstart").datetimepicker('getValue');
+            var today = new Date();
+            var dateEndValue = $("#eventend").datetimepicker('getValue');
+
+            if ($("#txtEventName").val() == "") {
+                alert("Please enter an Event Name");
+                $("#txtEventName").focus();
+                return false;
+            }
+
+            if ($("#txtAddress").val() == "") {
+                alert("Please enter an Address");
+                $("#txtAddress").focus();
+                return false;
+            }
+
+            if (isNaN(dateStartValue) == false) {
+                var d = new Date(dateStartValue);
+            }
+            else {
+                alert("Please enter a vaid start time");
+                return false;
+            }
+
+            if (isNaN(dateEndValue) == false) {
+                var e = new Date(dateEndValue);
+            }
+            else {
+                alert("Please enter a vaid end time");
+                return false;
+            }
+
+            //Check if the start time is past date/time
+            if (d.getTime() < today.getTime()) {
+                alert("That's not a valid value! Please enter a future time.");
+                return false;
+            }
+
+
+            if (d.getTime() > e.getTime()) {
+                alert("The end time cannot be lesser than the start time");
+                return false;
+            }
+
+            return true;
+
+        }
+    </script>
+
+    <script>
+        function autoCompleteAddress() {
+            var input = document.getElementById("txtAddress");
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHpOedQQqh_X463UByOLfPMRYqmLSUBn4&libraries=places&callback=autoCompleteAddress">
+    </script>
+</body>
+</html>

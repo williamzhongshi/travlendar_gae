@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Travlendar</title>
+    <link rel="stylesheet" href="Content/css/bootstrap.css" /> 
+    <script src="Content/js/jquery.js" ></script>
+</head>
+<body>
+    <!-- Begin Header Content -->    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div >
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><img src="Content/img/calendar-icon.png" height="50px" width="50px" /></li>
+                    <li><h1 class="navbar-inverse navbar-text">Travlendar</h1></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    <li><a href="#" id="1"><span class="glyphicon glyphicon-log-in "></span>Sign In</a></li>
+                    
+                    <li><a href="#" id="2"><span class="glyphicon glyphicon-log-out "></span>Sign Out</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="flex-align:center">
+        <ul class="nav navbar-nav">
+                    <li><a href="DisplayCalendar.html" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a></li>
+                    <li><a href="#" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a></li>
+                    
+                    <li><a href="CreateEvent.html" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a></li>
+                    
+                    <li><a href="#" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a></li>
+                    <li><a href="#" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a></li>
+                </ul>
+        
+    </div>
+    <div class="container-fluid"><h5 style="text-align:left">Add New Event</h5></div>
+    <hr />
+    <!-- End of Header Content -->
+
+<!-- Begin Main Content -->
+<div class="container">
+ <form id="frmEvent" method="post" >
+
+     <div id="travelOptions"  class="modal col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+        <div class="modal-dialog" >
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="addModalLabel">Choose your Travel Options</h3>
+                </div>
+ 
+                        <div class="modal-body">
+                       <fieldset>
+                      <legend>Options</legend>
+                      <div>
+                        <input type="checkbox" id="Car" name="travelPref" value="Car" />
+                        <label for="Car">Car</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="Bike" name="travelPref" value="Bike" />
+                        <label for="Bike">Bike</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="Walk" name="travelPref" value="Walk" />
+                        <label for="Walk">Walk</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="Public" name="travelPref" value="Public" />
+                        <label for="Public">Public Transportation</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="Taxi" name="travelPref" value="Taxi" />
+                        <label for="Taxi">Taxicab/Rideshare</label>
+                      </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+      </div>
+
+     <div id="Div1" class="modal col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right"  tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="H1">Set Display Preference</h3>
+                </div>
+ 
+                        <div class="modal-body">
+                        <div class="form-group">
+                        <fieldset>
+                        <legend class="form">Default Display </legend>
+                        <div class="form">
+
+                            <input type="radio" name="display" value="Month" checked="checked" />Month View <br />
+                            <input type="radio" name="display" value="Week" />Week View <br />
+                            <input type="radio" name="display" value="Day" />Day View <br />
+
+                        </div>
+                        </fieldset>
+                       </div>
+                </div>
+            </div>
+        </div>
+      </div>
+       <div class="col-md-12 col-centered center-block"><input type="button" id="btnSubmit" value="Submit Preferences" class="button orange float-right"   onclick="validateForm()"/></div>
+
+</form>
+
+</div>
+
+
+<script type="text/javascript">
+    function validateForm() {
+        if ($('#frmEvent input[type=checkbox]:checked').length > 0) {
+            return true;
+        }
+        else {
+            alert("Please select at least one Travel Option ");
+            return false;
+        }
+
+    }
+</script>
+
+<!-- End of Main Content -->
+
+<!-- Begin Footer -->
+<footer>
+
+<div class="footer">
+
+        <p>&copy; 2017 - Travlender</p>
+</div>
+</footer>
+<!-- End of Footer -->
+</body>
+</html>

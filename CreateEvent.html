@@ -64,10 +64,12 @@
             if (validation == true) {
                 var name = $("#txtEventName").val();
                 var address = $("#txtAddress").val();
+                var orig_address = $("#txt_Origin_Address").val();
+                var origin_address = $("#txt_Origin_Address").val();
                 var dateStartValue = $("#eventstart").datetimepicker('getValue');
                 var dateEndValue = $("#eventend").datetimepicker('getValue');
                 var travel = $('input[name=travel]:checked').val();
-                var jsonString = '{ name: "' + name + '", address: "' + address + '", eventStart: "' + dateStartValue + '", eventEnd: "' + dateEndValue + '",travel: "' + travel + '"}';
+                var jsonString = '{ name: "' + name + '", address: "' + address + '",orig_address: "' + orig_address + '", eventStart: "' + dateStartValue + '", eventEnd: "' + dateEndValue + '",travel: "' + travel + '"}';
                 alert(jsonString);
             }
             else return false;
@@ -84,6 +86,11 @@
             if ($("#txtAddress").val() == "") {
                 alert("Please enter an Address");
                 $("#txtAddress").focus();
+                return false;
+            }
+            if ($("#txt_Origin_Address").val() == "") {
+                alert("Please enter an Address");
+                $("#txt_Origin_Address").focus();
                 return false;
             }
             if (isNaN(dateStartValue) == false) {
@@ -118,10 +125,17 @@
             var input = document.getElementById("txtAddress");
             var autocomplete = new google.maps.places.Autocomplete(input);
         }
+
+        function autoCompleteOriginAddress() {
+            var input = document.getElementById("txt_Origin_Address");
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        }
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHpOedQQqh_X463UByOLfPMRYqmLSUBn4&libraries=places&callback=autoCompleteAddress">
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHpOedQQqh_X463UByOLfPMRYqmLSUBn4&libraries=places&callback=autoCompleteOriginAddress">
+
 </body>
 </html></title>
 </head>
