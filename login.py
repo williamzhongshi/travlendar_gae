@@ -94,31 +94,31 @@ class MainPage(webapp2.RequestHandler):
 
 
 
-            cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
+            #cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
 
-            if len(cred_list) != 0:
-                cred = cred_list[0]
-                logging.info("use old cred" + str(cred))
-                token = cred.access_token
-                credentials = AccessTokenCredentials(token, 'user-agent-value')
-
-                http = credentials.authorize(httplib2.Http())
-                #credentials.refresh(http)
-                service = discovery.build('calendar', 'v3', http=http)
-
-                now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-                print('Getting the upcoming 10 events')
-                eventsResult = service.events().list(
-                        calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
-                        orderBy='startTime').execute()
-                events = eventsResult.get('items', [])
-
-                if not events:
-                    logging.info('No upcoming events found.')
-                for event in events:
-                    start = event['start'].get('dateTime', event['start'].get('date'))
-                    logging.info("Found event: %s %s" % (start, event['summary']))
-
+#            if len(cred_list) != 0:
+#                cred = cred_list[0]
+#                logging.info("use old cred" + str(cred))
+#                token = cred.access_token
+#                credentials = AccessTokenCredentials(token, 'user-agent-value')
+#
+#                http = credentials.authorize(httplib2.Http())
+#                #credentials.refresh(http)
+#                service = discovery.build('calendar', 'v3', http=http)
+#
+#                now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+#                print('Getting the upcoming 10 events')
+#                eventsResult = service.events().list(
+#                        calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+#                        orderBy='startTime').execute()
+#                events = eventsResult.get('items', [])
+#
+#                if not events:
+#                    logging.info('No upcoming events found.')
+#                for event in events:
+#                    start = event['start'].get('dateTime', event['start'].get('date'))
+#                    logging.info("Found event: %s %s" % (start, event['summary']))
+#
                 # Refer to the Python quickstart on how to setup the environment:
                 # https://developers.google.com/google-apps/calendar/quickstart/python
                 # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
@@ -151,19 +151,19 @@ class AuthPage(webapp2.RequestHandler):
         
 
         cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
-        if len(cred_list) == 0:
-            logging.info("no cred in ndb")
-            cred = CredentialsM()
-            credentials = flow.step2_exchange(code)
-            logging.info("dumping:" + credentials.access_token)
-            cred.user_email = user.email()
-            cred.access_token = credentials.access_token
-            cred.put()
-            logging.info("cred:" + str(credentials))
-        else:
-            cred = cred_list[0]
-            logging.info("use old cred" + str(cred))
-            credentials = AccessTokenCredentials(cred.access_token, 'user-agent-value')
+        #if len(cred_list) == 0:
+        logging.info("no cred in ndb")
+        cred = CredentialsM()
+        credentials = flow.step2_exchange(code)
+        logging.info("dumping:" + credentials.access_token)
+        cred.user_email = user.email()
+        cred.access_token = credentials.access_token
+        cred.put()
+        logging.info("cred:" + str(credentials))
+       # else:
+       #     cred = cred_list[0]
+       #     logging.info("use old cred" + str(cred))
+       #     credentials = AccessTokenCredentials(cred.access_token, 'user-agent-value')
 
         logging.info("cred after:" + str(credentials))
 

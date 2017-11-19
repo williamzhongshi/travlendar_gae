@@ -14,6 +14,8 @@ handlers:
 - url: /Content
   static_dir: Content
 
+- url: /preference.*
+  script: preference.app
 
 - url: /
   script: login.app
@@ -24,6 +26,7 @@ handlers:
 - url: /create_event
   script: create_event.app
 
+- url: 
 
 #- url: /blobstore/serviece
 #  script: blob_store_test.app
