@@ -17,78 +17,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="login.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../login.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="119" column="34" lean-forward="false" selection-start-line="119" selection-start-column="34" selection-end-line="119" selection-end-column="45" />
-              <folding>
-                <element signature="e#617#630#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create_event.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="create_event.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../create_event.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="54" column="30" lean-forward="true" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+            <state relative-caret-position="170">
+              <caret line="160" column="43" lean-forward="false" selection-start-line="160" selection-start-column="43" selection-end-line="160" selection-end-column="43" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ManageEvent.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../ManageEvent.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="205" column="55" lean-forward="true" selection-start-line="205" selection-start-column="55" selection-end-line="205" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateEvent.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../CreateEvent.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="29" column="18" lean-forward="true" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
-              <folding>
-                <element signature="n#style#0;n#input#0;n#div#3;n#div#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DisplayCalendar.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../DisplayCalendar.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="53" column="81" lean-forward="false" selection-start-line="53" selection-start-column="81" selection-end-line="53" selection-end-column="81" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tmp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../tmp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1235">
-              <caret line="194" column="7" lean-forward="false" selection-start-line="194" selection-start-column="7" selection-end-line="194" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="entities_def.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../entities_def.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="18" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -105,7 +41,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sig</find>
       <find>jquery</find>
       <find>redirect</find>
       <find>MAPS_CLIENT_ID</find>
@@ -135,6 +70,7 @@
       <find>now</find>
       <find>origin_address</find>
       <find>get_</find>
+      <find>(\d+-\d+-\d+T\d+:\d+:\d+)</find>
     </findStrings>
     <replaceStrings>
       <replace>entity_def.User</replace>
@@ -166,18 +102,19 @@
         <option value="$USER_HOME$/time_test.py" />
         <option value="$USER_HOME$/create_event.py" />
         <option value="$USER_HOME$/login.py" />
-        <option value="$PROJECT_DIR$/../tmp" />
-        <option value="$PROJECT_DIR$/../DisplayCalendar.html" />
-        <option value="$PROJECT_DIR$/../login.py" />
-        <option value="$PROJECT_DIR$/../CreateEvent.html" />
+        <option value="$USER_HOME$/tmp" />
+        <option value="$USER_HOME$/DisplayCalendar.html" />
+        <option value="$USER_HOME$/login.py" />
+        <option value="$USER_HOME$/CreateEvent.html" />
+        <option value="$USER_HOME$/create_event.py" />
         <option value="$PROJECT_DIR$/../create_event.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="172" />
-    <option name="y" value="51" />
-    <option name="width" value="1655" />
+    <option name="x" value="51" />
+    <option name="y" value="60" />
+    <option name="width" value="1656" />
     <option name="height" value="923" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -218,8 +155,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/.." />
-      <recent name="$PROJECT_DIR$/../Content" />
+      <recent name="$USER_HOME$" />
+      <recent name="$USER_HOME$/Content" />
       <recent name="C:\Users\William\Desktop\Advanced Programming\APT_maroon\mini_project\appengine-miniproject-python" />
     </key>
   </component>
@@ -301,14 +238,21 @@
       <option name="project" value="LOCAL" />
       <updated>1510888614452</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="minor fix">
+      <created>1510892151311</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1510892151311</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="172" y="51" width="1655" height="923" extended-state="0" />
+    <frame x="51" y="60" width="1656" height="923" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23444109" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23429951" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33368984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -335,14 +279,14 @@
     <MESSAGE value="fixed login sequence" />
     <MESSAGE value="test add calendar event" />
     <MESSAGE value="added css stuff from Swapna, auto query previous event for address and end time, calculate time travel to new event and add to calendar" />
-    <option name="LAST_COMMIT_MESSAGE" value="added css stuff from Swapna, auto query previous event for address and end time, calculate time travel to new event and add to calendar" />
+    <MESSAGE value="minor fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/index.yaml" />
     <entry file="file://$USER_HOME$/Login.html" />
     <entry file="file://$USER_HOME$/login.py" />
     <entry file="file://$USER_HOME$/entities_def.py" />
@@ -384,83 +328,22 @@
     <entry file="file://$USER_HOME$/client_secret.json" />
     <entry file="file://$USER_HOME$/app.yaml" />
     <entry file="file://$USER_HOME$/login.py" />
-    <entry file="file://$PROJECT_DIR$/../entity.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#35#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../tmp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1235">
-          <caret line="194" column="7" lean-forward="false" selection-start-line="194" selection-start-column="7" selection-end-line="194" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../login.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="119" column="34" lean-forward="false" selection-start-line="119" selection-start-column="34" selection-end-line="119" selection-end-column="45" />
-          <folding>
-            <element signature="e#617#630#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Content/css/bootstrap.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../CreateEvent.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="29" column="18" lean-forward="true" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#3;n#div#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../entities_def.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/entity.py" />
+    <entry file="file://$USER_HOME$/tmp" />
+    <entry file="file://$USER_HOME$/login.py" />
+    <entry file="file://$USER_HOME$/Content/css/bootstrap.css" />
+    <entry file="file://$USER_HOME$/CreateEvent.html" />
+    <entry file="file://$USER_HOME$/entities_def.py" />
+    <entry file="file://$USER_HOME$/create_event.py" />
+    <entry file="file://$USER_HOME$/ManageEvent.html" />
+    <entry file="file://$USER_HOME$/DisplayCalendar.html" />
     <entry file="file://$PROJECT_DIR$/../create_event.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="54" column="30" lean-forward="true" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+        <state relative-caret-position="170">
+          <caret line="160" column="43" lean-forward="false" selection-start-line="160" selection-start-column="43" selection-end-line="160" selection-end-column="43" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DisplayCalendar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="53" column="81" lean-forward="false" selection-start-line="53" selection-start-column="81" selection-end-line="53" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ManageEvent.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="205" column="55" lean-forward="true" selection-start-line="205" selection-start-column="55" selection-end-line="205" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
