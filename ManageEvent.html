@@ -54,7 +54,26 @@
 
     <!-- Begin Body Content  -->
 
-        <div class="container   pull-left">
+
+        <div class="container ">
+       <div id="createEvent"  class=" col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+       <!-- Error Message -->
+       <div class="modal-dialog" id="errorMsg">
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="H2">Error Title goes here</h3>
+                </div>
+
+             <div class="modal-body">
+            <!-- Name-->
+            <div class="form">Error Message goes here</div>
+            </div>
+            </div>
+        </div>
+        <!-- End of Error Message -->
+
           <div class="modal-lg " >
             <!-- Modal content-->
             <div class="modal-content">
@@ -85,7 +104,7 @@
       </div>
 
     <form id="frmEvent" method="post" >
-    <div id="createEvent"  class=" col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+
         <div class="modal-dialog" >
             <!-- Modal content-->
             <div class="modal-content">
@@ -93,12 +112,12 @@
                 <div class="modal-header jumbotron">
                     <h3 id="H1">Modify Event Details</h3>
                 </div>
- 
+
              <div class="modal-body">
             <!-- Name-->
             <div class="form">Event Name</div>
             <div class="form"><input type="text" id="txtEventName" /></div>
-            
+
             <!-- Location -->
             <div class="form">Location</div>
             <div class="form"><input type="text" id="txtAddress" style="width: 500px" />
@@ -106,7 +125,7 @@
 
             <!-- Start Day/Time-->
             <div class="form">Start Time</div>
-            <div class="form"><input type="text" id="eventstart" />                               
+            <div class="form"><input type="text" id="eventstart" />
             </div>
 
             <!-- End Day/Time-->
@@ -116,21 +135,22 @@
             <!-- Travel Options-->
             <div class="form">Travelling By</div>
             <div class="form">
-                <input type="radio" name="travel" value="Car" checked="checked" />Car 
+                <input type="radio" name="travel" value="Car" checked="checked" />Car
                 <input type="radio" name="travel" value="Bike" />Bike
                 <input type="radio" name="travel" value="Walk" />Walk
-                <input type="radio" name="travel" value="Public Transport" />Public Transport  
+                <input type="radio" name="travel" value="Public Transport" />Public Transport
             </div>
             </div>
             </div>
         </div>
-      </div>
+
 
         <div class="col-md-12 col-centered center-block"><input type="button" value="Modify Event"  class="button orange float-right" onclick="SendJSON()" /></div>
-        
+
+    </form>
 
     <!-- End of Body Content -->
-    </form>
+    </div>
     </div>
     <!-- End of Main Content -->
 

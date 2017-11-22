@@ -51,13 +51,22 @@ MAPS_KEY = 'AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg'
 
 default_address = "UT Austin"
 
+mode_dict = {
+    "Car": "driving",
+    "Walk": "walking",
+    "Bike": "bicycling",
+    "Public Transport": "transit",
+    "Public": "transit",
+    "Fastest": "fastest"
+}
+
 class CreateEvent(webapp2.RequestHandler):
 
     def get_estimated_time(self, origin_in, destination_in, arrival_time, transit_mode="driving"):
         origin = origin_in.replace(" ", "+")
         destination = destination_in.replace(" ", "+")
 
-        url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&arrival_time=%d&transit_mode=%s&key=AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg" % (origin, destination, arrival_time, transit_mode)
+        url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&arrival_time=%d&mode=%s&key=AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg" % (origin, destination, arrival_time, transit_mode)
         logging.info("Request url is %s" % url)
 
         response = json.loads(urlfetch.fetch(url).content, encoding="utf-8")
@@ -80,15 +89,34 @@ class CreateEvent(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('CreateEvent.html')
         self.response.write(template.render(template_values))
 
-
+    def find_fastest_method(self, origin, destination, arrival_time, options):
+        time_list = []
+        for item in options:
+            time_list.append((self.get_estimated_time(origin, destination, arrival_time, transit_mode=item), item))
+        # driving_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="driving")
+        # walking_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="walking")
+        # transit_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="transit")
+        # bicycling_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="bicycling")
+        # logging.info("w, d, t, b time: %d %d %d %d" % (walking_time, driving_time, transit_time, bicycling_time))
+        #return min((walking_time, "walking"), (driving_time, "driving"), (transit_time, "transit"), (bicycling_time, "bicycling"))
+        logging.info("time list: %s " % time_list)
+        return min(time_list)
     def post(self):
+
+        ##
+        # data = json.loads(self.request.body)
+        # logging.info("got json: %s" % data)
         # user_obj = User.query(User.email == users.get_current_user().email()).fetch()[0]
         user = users.get_current_user()
+        user_db = User.query(User.email == user.email()).fetch()[0]
         event_name = self.request.get('txtEventName')
         address = self.request.get('txtAddress')
         txt_arrival_time = self.request.get('eventstart')
         txt_stop_time = self.request.get('eventend')
-        transit_mode = "driving"
+        transit_mode = self.request.get('travel')
+
+        trip_mode = mode_dict.get(transit_mode)
+        logging.info("Transit mode is %s" % trip_mode)
 
         depart_from_previous_dest = True
 
@@ -107,7 +135,7 @@ class CreateEvent(webapp2.RequestHandler):
         stop_time = calendar.timegm(stop_test_time)
 
         cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
-
+        logging.info("cred list len %d " % len(cred_list))
         if len(cred_list) != 0:
             cred = cred_list[0]
             logging.info("use old cred" + str(cred))
@@ -122,6 +150,8 @@ class CreateEvent(webapp2.RequestHandler):
             #if depart_from_previous_dest:
             logging.info('Getting the upcoming 10 events')
             now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+            now_time = time.time()
+
             logging.info("arrival_time_string_google: %s " % arrival_time_string_google)
             eventsResult = service.events().list(
                 calendarId='primary', timeMin=now, timeMax=arrival_time_string_google, singleEvents=True,
@@ -129,30 +159,42 @@ class CreateEvent(webapp2.RequestHandler):
             events = eventsResult.get('items', [])
             if not events:
                 logging.info('No upcoming events found.')
-            for event in reversed(events):
-                start = event['start'].get('dateTime', event['start'].get('date'))
-                # logging.info("Found event: %s" % event)
-                logging.info("Found event: %s %s" % (start, event['summary']))
-            previous_event = events[-1]
+                origin_address = "Austin" # in the future maybe offer an default location
+                origin_time_stamp = now_time
+                logging.info("No upcoming events found, using address %s and time %d" % (origin_address, origin_time_stamp))
+            else:
+                for event in reversed(events):
+                    start = event['start'].get('dateTime', event['start'].get('date'))
+                    # logging.info("Found event: %s" % event)
+                    logging.info("Found event: %s %s" % (start, event['summary']))
+                previous_event = events[-1]
+                origin_address = previous_event['location']
+                origin_stop_time = previous_event['end']['dateTime']
+                t = re.search("(\d+-\d+-\d+T\d+:\d+:\d+)([+-]\d+):(\d+)", origin_stop_time)
+                origin_stop_time = t.group(1) + " %s" % time.tzname[0]
+                logging.info("Found stop time %s" % origin_stop_time)
 
-            #    if previous_event.get('location') is not None:
-            # logging.info("Previous location: %s" % (previous_event['location']))
-            origin_address = previous_event['location']
-            # logging.info("Previous event %s " % previous_event)
-            origin_stop_time = previous_event['end']['dateTime']
-            t = re.search("(\d+-\d+-\d+T\d+:\d+:\d+)([+-]\d+):(\d+)", origin_stop_time)
-            origin_stop_time = t.group(1) + " %s" % time.tzname[0]
-            logging.info("Found stop time %s" % origin_stop_time)
-
-            origin_time_stamp = int(datetime.datetime.strptime(origin_stop_time, "%Y-%m-%dT%H:%M:%S %Z").strftime("%s"))
-            logging.info("Found previous event at %s, end at %s aka ts %d" % (origin_address, origin_stop_time, origin_time_stamp))
+                origin_time_stamp = int(datetime.datetime.strptime(origin_stop_time, "%Y-%m-%dT%H:%M:%S %Z").strftime("%s"))
+                logging.info("Found previous event at %s, end at %s aka ts %d" % (origin_address, origin_stop_time, origin_time_stamp))
             #    else:
             #        origin_address = default_address
             #else:
             #    origin_address = default_address
-
-            travel_time = self.get_estimated_time(origin_in=origin_address, destination_in=address,
-                                                  arrival_time=arrival_time, transit_mode=transit_mode)
+            if trip_mode == "fastest":
+                travel_options = user_db.travel_option
+                method_list = []
+                for i in travel_options:
+                    logging.info("travel option input got %s" % (i.decode('utf-8')))
+                    method_list.append(mode_dict.get(i.decode('utf-8')))
+                logging.info("Searching for best option in %s " % method_list)
+                travel_time, transit_mode = self.find_fastest_method(origin=origin_address, destination=address,
+                                                                     arrival_time=arrival_time, options = method_list)
+            else:
+                travel_time = self.get_estimated_time(origin_in=origin_address, destination_in=address,
+                                                      arrival_time=arrival_time, transit_mode=trip_mode)
+                transit_mode = trip_mode
+            # travel_time = self.get_estimated_time(origin_in=origin_address, destination_in=address,
+            #                                       arrival_time=arrival_time, transit_mode=transit_mode)
 
             departure_time = arrival_time - travel_time
             if departure_time < origin_time_stamp:
@@ -166,9 +208,9 @@ class CreateEvent(webapp2.RequestHandler):
                 logging.info("String departure time is %s" % departure_time_string)
 
                 event = {
-                    'summary': "Travel to %s" + event_name,
+                    'summary': "Travel to %s using %s" % (event_name, transit_mode),
                     'location': address,
-                    'description': 'test',
+                    'description': "Proposed method %s " % transit_mode,
                     'start': {
                         'dateTime': departure_time_string,
                         'timeZone': 'America/Chicago',
@@ -184,6 +226,7 @@ class CreateEvent(webapp2.RequestHandler):
                             {'method': 'popup', 'minutes': 10},
                         ],
                     },
+                    'colorId': 5,
                 }
 
                 logging.info("Adding event %s " % event)

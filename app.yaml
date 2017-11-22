@@ -26,7 +26,6 @@ handlers:
 - url: /create_event
   script: create_event.app
 
-- url: 
 
 #- url: /blobstore/serviece
 #  script: blob_store_test.app

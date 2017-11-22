@@ -3,10 +3,12 @@
 <head>
     <title>Travlendar</title>
     <link rel="stylesheet" href="Content/css/bootstrap.css" /> 
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css" />
+
     <script src="Content/js/jquery.js" ></script>
 </head>
 <body>
-    <!-- Begin Header Content -->    
+    <!-- Begin Header Content -->
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div >
@@ -22,9 +24,9 @@
             </div>
             <div>
                 <ul class="nav navbar-nav navbar-right">
-                    
+
                     <li><a href="#" id="1"><span class="glyphicon glyphicon-log-in "></span>Sign In</a></li>
-                    
+
                     <li><a href="#" id="2"><span class="glyphicon glyphicon-log-out "></span>Sign Out</a></li>
 
                 </ul>
@@ -36,13 +38,13 @@
         <ul class="nav navbar-nav">
                     <li><a href="DisplayCalendar.html" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a></li>
                     <li><a href="#" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a></li>
-                    
+
                     <li><a href="CreateEvent.html" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a></li>
-                    
+
                     <li><a href="#" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a></li>
                     <li><a href="#" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a></li>
                 </ul>
-        
+
     </div>
     <div class="container-fluid"><h5 style="text-align:left">Add New Event</h5></div>
     <hr />
@@ -52,15 +54,36 @@
 <div class="container">
  <form id="frmEvent" method="post" >
 
-     <div id="travelOptions" action="/preference"  class="modal col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
-        <div class="modal-dialog" >
+     <div id="travelOptions"  class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+
+       <!-- Error Message -->
+       <div class="modal-dialog" id="errorMsg">
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="H2">Error Title goes here</h3>
+                </div>
+
+             <div class="modal-body">
+            <!-- Name-->
+            <div class="form">Error Message goes here</div>
+            </div>
+            </div>
+        </div>
+        <!-- End of Error Message -->
+        </div>
+
+         <div id="Div2"  class="col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+
+         <div class="modal-dialog" >
             <!-- Modal content-->
             <div class="modal-content">
 
                 <div class="modal-header jumbotron">
                     <h3 id="addModalLabel">Choose your Travel Options</h3>
                 </div>
- 
+
                         <div class="modal-body">
                        <fieldset>
                       <legend>Options</legend>
@@ -90,7 +113,7 @@
         </div>
       </div>
 
-     <div id="Div1" class="modal col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right"  tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+     <div id="Div1" class="col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right"  tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -98,7 +121,7 @@
                 <div class="modal-header jumbotron">
                     <h3 id="H1">Set Display Preference</h3>
                 </div>
- 
+
                         <div class="modal-body">
                         <div class="form-group">
                         <fieldset>
