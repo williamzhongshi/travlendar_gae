@@ -26,7 +26,14 @@ handlers:
 - url: /create_event
   script: create_event.app
 
-- url: 
+- url: /api/getdetails/.*  # This regex directs all routes to main.app
+  script: event_management_api.app
+
+- url: /api/patch/.*  # This regex directs all routes to main.app
+  script: event_management_api.app
+
+- url: /api/delete/.*  # This regex directs all routes to main.app
+  script: event_management_api.app
 
 #- url: /blobstore/serviece
 #  script: blob_store_test.app

@@ -182,6 +182,7 @@ class AuthPage(webapp2.RequestHandler):
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
             logging.info("Found event: %s %s" % (start, event['summary']))
+            logging.info("event %s" % (event['id']))
 
         if user:
             url = users.create_logout_url(self.request.uri)
@@ -190,7 +191,6 @@ class AuthPage(webapp2.RequestHandler):
 
             if len(target_user) == 0:
                 logging.info("User not found, creating User entity %s" % users.get_current_user().email())
-                logging.info("%s", dir(user))
                 user_obj = User()
                 user_obj.username = user.email()  # not sure what this is for
                 user_obj.email = user.email()
@@ -205,7 +205,7 @@ class AuthPage(webapp2.RequestHandler):
             'url_linktext': url_linktext,
         }
 
-        template = JINJA_ENVIRONMENT.get_template('Login.html')
+        template = JINJA_ENVIRONMENT.get_template('DisplayCalendar.html')
         self.response.write(template.render(template_values))
 
 
