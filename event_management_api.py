@@ -85,10 +85,10 @@ def patch(event_id = None, email=None):
 
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     event = service.events().get(calendarId='primary', eventId=event_id).execute()
-    event['eventName'] = req_evt['eventName']
     event['location'] = req_evt['location']
-    event['startTime'] = req_evt['startTime']
-    event['endTime'] = req_evt['endTime']
+    event['start']['dateTime'] = req_evt['startTime']
+    event['end']['dateTime'] = req_evt['endTime']
+    event['summary'] = req_evt['eventName']
 
     updated_event = service.events().update(calendarId='primary', eventId=event_id, body=event).execute()
     return json.dumps(event)
