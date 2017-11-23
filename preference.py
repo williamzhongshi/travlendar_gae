@@ -46,7 +46,8 @@ class Preference(webapp2.RequestHandler):
             pre = i.split('/')
             logging.info("preference %s", pre)
             logging.info("preference %s", i)
-            pref_list.append(str(pre))
+            # pref_list.append(str(pre))
+            pref_list.append(i)
 
         if len(target_user) != 0:
             user_obj = target_user[0]
