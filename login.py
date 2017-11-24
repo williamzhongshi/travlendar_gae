@@ -151,19 +151,23 @@ class AuthPage(webapp2.RequestHandler):
         
 
         cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
-        #if len(cred_list) == 0:
-        logging.info("no cred in ndb")
-        cred = CredentialsM()
-        credentials = flow.step2_exchange(code)
-        logging.info("dumping:" + credentials.access_token)
-        cred.user_email = user.email()
-        cred.access_token = credentials.access_token
-        cred.put()
-        logging.info("cred:" + str(credentials))
-       # else:
-       #     cred = cred_list[0]
-       #     logging.info("use old cred" + str(cred))
-       #     credentials = AccessTokenCredentials(cred.access_token, 'user-agent-value')
+        if len(cred_list) == 0:
+            logging.info("no cred in ndb")
+            cred = CredentialsM()
+            credentials = flow.step2_exchange(code)
+            logging.info("dumping:" + credentials.access_token)
+            cred.user_email = user.email()
+            cred.access_token = credentials.access_token
+            cred.put()
+            logging.info("cred:" + str(credentials))
+        else:
+            cred = cred_list[0]
+            credentials = flow.step2_exchange(code)
+            logging.info("dumping:" + credentials.access_token)
+            cred.access_token = credentials.access_token
+            cred.put()
+            logging.info("use old cred" + str(cred))
+            #credentials = AccessTokenCredentials(cred.access_token, 'user-agent-value')
 
         logging.info("cred after:" + str(credentials))
 
