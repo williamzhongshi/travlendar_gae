@@ -30,6 +30,8 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.service_account import ServiceAccountCredentials
 from oauth2client.client import AccessTokenCredentials
 
+from trip_tools import *
+
 from apiclient.discovery import build
 from apiclient import discovery
 
@@ -60,27 +62,43 @@ mode_dict = {
     "Fastest": "fastest"
 }
 
+# def get_estimated_time(origin_in, destination_in, arrival_time, transit_mode="driving"):
+#     origin = origin_in.replace(" ", "+")
+#     destination = destination_in.replace(" ", "+")
+#
+#     url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&arrival_time=%d&mode=%s&key=AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg" % (
+#     origin, destination, arrival_time, transit_mode)
+#     logging.info("Request url is %s" % url)
+#
+#     response = json.loads(urlfetch.fetch(url).content, encoding="utf-8")
+#     for i in response:
+#         logging.info("%s", i)
+#     elements = response["rows"][0]["elements"]
+#
+#     # for i in elements:
+#     i = elements[0]
+#     logging.info("single element %s" % i)
+#     if i["status"].decode('utf-8') == "OK":
+#         duration = i["duration"]["text"]
+#         logging.info("From %s to %s takes %s " % (origin, destination, duration))
+#     return i["duration"]["value"]
+#
+# def find_fastest_method(origin, destination, arrival_time, options):
+#     time_list = []
+#     for item in options:
+#         time_list.append((get_estimated_time(origin, destination, arrival_time, transit_mode=item), item))
+#     # driving_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="driving")
+#     # walking_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="walking")
+#     # transit_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="transit")
+#     # bicycling_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="bicycling")
+#     # logging.info("w, d, t, b time: %d %d %d %d" % (walking_time, driving_time, transit_time, bicycling_time))
+#     #return min((walking_time, "walking"), (driving_time, "driving"), (transit_time, "transit"), (bicycling_time, "bicycling"))
+#     logging.info("time list: %s " % time_list)
+#     return min(time_list)
+
+
+
 class CreateEvent(webapp2.RequestHandler):
-
-    def get_estimated_time(self, origin_in, destination_in, arrival_time, transit_mode="driving"):
-        origin = origin_in.replace(" ", "+")
-        destination = destination_in.replace(" ", "+")
-
-        url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&arrival_time=%d&mode=%s&key=AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg" % (origin, destination, arrival_time, transit_mode)
-        logging.info("Request url is %s" % url)
-
-        response = json.loads(urlfetch.fetch(url).content, encoding="utf-8")
-        for i in response:
-            logging.info("%s", i)
-        elements = response["rows"][0]["elements"]
-
-        #for i in elements:
-        i = elements[0]
-        logging.info("single element %s" % i)
-        if i["status"].decode('utf-8') == "OK":
-            duration = i["duration"]["text"]
-            logging.info("From %s to %s takes %s " % (origin, destination, duration))
-        return i["duration"]["value"]
 
     def get(self):
 
@@ -89,25 +107,14 @@ class CreateEvent(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('CreateEvent.html')
         self.response.write(template.render(template_values))
 
-    def find_fastest_method(self, origin, destination, arrival_time, options):
-        time_list = []
-        for item in options:
-            time_list.append((self.get_estimated_time(origin, destination, arrival_time, transit_mode=item), item))
-        # driving_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="driving")
-        # walking_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="walking")
-        # transit_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="transit")
-        # bicycling_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="bicycling")
-        # logging.info("w, d, t, b time: %d %d %d %d" % (walking_time, driving_time, transit_time, bicycling_time))
-        #return min((walking_time, "walking"), (driving_time, "driving"), (transit_time, "transit"), (bicycling_time, "bicycling"))
-        logging.info("time list: %s " % time_list)
-        return min(time_list)
+
     def post(self):
 
         ##
         # logging.info("Dummy")
         # data = json.loads(self.request.body)
         # logging.info("got json: %s" % data)
-       user_obj = User.query(User.email == users.get_current_user().email()).fetch()[0]
+        user_obj = User.query(User.email == users.get_current_user().email()).fetch()[0]
         user = users.get_current_user()
         user_db = User.query(User.email == user.email()).fetch()[0]
         event_name = self.request.get('txtEventName')
@@ -193,10 +200,10 @@ class CreateEvent(webapp2.RequestHandler):
                     logging.info("travel option input got %s" % (i.decode('utf-8')))
                     method_list.append(mode_dict.get(i.decode('utf-8')))
                 logging.info("Searching for best option in %s " % method_list)
-                travel_time, transit_mode = self.find_fastest_method(origin=origin_address, destination=address,
+                travel_time, transit_mode = find_fastest_method(origin=origin_address, destination=address,
                                                                      arrival_time=arrival_time, options = method_list)
             else:
-                travel_time = self.get_estimated_time(origin_in=origin_address, destination_in=address,
+                travel_time = get_estimated_time(origin_in=origin_address, destination_in=address,
                                                       arrival_time=arrival_time, transit_mode=trip_mode)
                 transit_mode = trip_mode
             # travel_time = self.get_estimated_time(origin_in=origin_address, destination_in=address,
