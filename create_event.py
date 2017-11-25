@@ -104,9 +104,10 @@ class CreateEvent(webapp2.RequestHandler):
     def post(self):
 
         ##
+        # logging.info("Dummy")
         # data = json.loads(self.request.body)
         # logging.info("got json: %s" % data)
-        # user_obj = User.query(User.email == users.get_current_user().email()).fetch()[0]
+       user_obj = User.query(User.email == users.get_current_user().email()).fetch()[0]
         user = users.get_current_user()
         user_db = User.query(User.email == user.email()).fetch()[0]
         event_name = self.request.get('txtEventName')
@@ -153,6 +154,9 @@ class CreateEvent(webapp2.RequestHandler):
             now_time = time.time()
 
             logging.info("arrival_time_string_google: %s " % arrival_time_string_google)
+
+            # look for all events from now to before new event, find the last event before new event,
+            # get address and stop time
             eventsResult = service.events().list(
                 calendarId='primary', timeMin=now, timeMax=arrival_time_string_google, singleEvents=True,
                 orderBy='startTime').execute()
@@ -180,6 +184,8 @@ class CreateEvent(webapp2.RequestHandler):
             #        origin_address = default_address
             #else:
             #    origin_address = default_address
+
+            # calculate time needed from previous event to new event
             if trip_mode == "fastest":
                 travel_options = user_db.travel_option
                 method_list = []
@@ -196,6 +202,7 @@ class CreateEvent(webapp2.RequestHandler):
             # travel_time = self.get_estimated_time(origin_in=origin_address, destination_in=address,
             #                                       arrival_time=arrival_time, transit_mode=transit_mode)
 
+            # calculate when have to start
             departure_time = arrival_time - travel_time
             if departure_time < origin_time_stamp:
                 logging.info("ERROR!!! not enough time to travel to next location")
