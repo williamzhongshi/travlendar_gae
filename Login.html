@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head >
+<head>
     <title>Travlendar</title>
     <link rel="stylesheet" href="Content/css/bootstrap.min.css" />
     <link rel="stylesheet" href="Content/css/bootstrap.css" />
@@ -23,19 +23,20 @@
                     <li><h1 class="navbar-inverse navbar-text">Travlendar</h1></li>
                 </ul>
             </div>
-          <a href="{{ auth_url }}">Auth url</a>
-            </div>
+
+        </div>
     </nav>
 
+    <a href="{{ auth_url }}">Auth url</a>
 
-    <!--<div class="container-fluid"><h5 style="text-align:left">Login</h5></div>-->
+    <div class="container-fluid"><h5 style="text-align:left">Login</h5></div>
     <hr />
     <!-- End of Header Content -->
 
    <!-- Begin Main Content -->
    <div class="container" >
 
-      <form id="form2" action="/CreateEvent" method="post" >
+      <form id="form2" action="/create_event" method="post" >
 
         <!-- Begin Body Content -->
        <div id="createEvent"  class=" col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
@@ -44,17 +45,7 @@
                <br />
                <br />
                <br />
-           </div>
-    </header>
-   <!-- End of Header area -->
-  <div class="container-fluid jumbotron .col-md-offset-* " >
-        <div class="main-links">
-            <a href="create_event">create event</a>
-            <!--<a href="create_stream" >Create</a>-->
-            <!--<a href="all_stream" >View</a>-->
-            <!--<a href="searchstream" >Search</a>-->
-            <!--<a href="trending">Trending</a>-->
-            <!--<a href="geo_view">GeoView</a>-->
+         </div>
 
        <!-- Login Box -->
        <div class="modal-dialog" id="login">
@@ -63,46 +54,38 @@
 
                 <div class="modal-header jumbotron">
                     <h3 id="H1">Login</h3>
-        </div>
+                </div>
 
              <div class="modal-body">
             <!-- Name-->
             <div class="form"><a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a></div>
+            </div>
+
+            <div class="modal-footer jumbotron">
+                    <h3 id="H2">&nbsp;</h3>
+                </div>
+            </div>
+        </div>
+           <div>
+               <br />
+               <br />
+               <br />
+               <br />
+           </div>
+        </div>
+        <!-- End of Login window -->
+           </form>
     </div>
-      <table cellpadding="0px" cellspacing="0px" align="center">
-        <tr>
-            <td valign="top">
-                <form id="form2" runat="server">
-                    <table width="616px" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td align="center">
-                                <table>
-                                    <!--<tr>-->
-                                        <!--<td>-->
-                                            <!--<input type="text" name="txtUserName" id="txtUserName" placeholder="Gmail UserId"    />-->
-                                        <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
 
-                                        <!--<td>-->
-                                            <!--<input type="text" id="txtPwd" name="txtPwd"  placeholder="Gmail Password"/>-->
-                                        <!--</td>-->
-                                    <!--</tr>-->
+    <!-- End of Body Content -->
 
-                                    <tr>
-                                        <td colspan="2" align="center">
-                                            <br />
-                                            <a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a>
-                                            <!--<input type="button" value="Login with google" id="btnSubmit" />-->
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </td>
-         </tr>
-      </table>
+
+           <div class="footer">
+
+        <p>&copy; 2017 - Travlender</p>
+</div>
+
+<!-- End of Footer -->
+
 </body>
 </html>

@@ -88,7 +88,8 @@ mode_dict = {
 #     time_list = []
 #     for item in options:
 #         time_list.append((get_estimated_time(origin, destination, arrival_time, transit_mode=item), item))
-#     # driving_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="driving")
+#     # driving_time = self.g
+# et_estimated_time(origin, destination, arrival_time, transit_mode="driving")
 #     # walking_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="walking")
 #     # transit_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="transit")
 #     # bicycling_time = self.get_estimated_time(origin, destination, arrival_time, transit_mode="bicycling")
@@ -104,6 +105,7 @@ class CreateEvent(webapp2.RequestHandler):
     def get(self):
 
         template_values = {
+            "error_type": "modal"
         }
         template = JINJA_ENVIRONMENT.get_template('CreateEvent.html')
         self.response.write(template.render(template_values))
@@ -130,7 +132,7 @@ class CreateEvent(webapp2.RequestHandler):
 
         logging.info("Event name: %s, address: %s, start; %s, stop: %s " % (event_name, address, txt_arrival_time, txt_stop_time))
         # data = self.request.get('frmEvent')
-        data = json.load(self.request.body)
+        # data = json.load(self.request.body)
         # logging.info("got json: %s" % data)
         # # return
         # time hardcoded for now
@@ -198,9 +200,13 @@ class CreateEvent(webapp2.RequestHandler):
             if trip_mode == "fastest":
                 travel_options = user_db.travel_option
                 method_list = []
-                for i in travel_options:
-                    logging.info("travel option input got %s" % (i.decode('utf-8')))
-                    method_list.append(mode_dict.get(i.decode('utf-8')))
+                if len(travel_options) == 0:
+                    logging.info("No user preference found, use all")
+                    method_list = ["driving", "bicycling", "walking", "transit"]
+                else:
+                    for i in travel_options:
+                        logging.info("travel option input got %s" % (i.decode('utf-8')))
+                        method_list.append(mode_dict.get(i.decode('utf-8')))
                 logging.info("Searching for best option in %s " % method_list)
                 travel_time, transit_mode = find_fastest_method(origin=origin_address, destination=address,
                                                                      arrival_time=arrival_time, options = method_list)
@@ -213,11 +219,17 @@ class CreateEvent(webapp2.RequestHandler):
 
             # calculate when have to start
             departure_time = arrival_time - travel_time
+
             if departure_time < origin_time_stamp:
                 logging.info("ERROR!!! not enough time to travel to next location")
+                minutes, seconds = divmod(travel_time, 60)
+                hours, mod_minutes = divmod(minutes, 60)
                 template_values = {
+                    "error_type": "modal-dialog",
+                    "error_header": "Not enough time to travel from %s to %s" % (origin_address, address),
+                    "error_message": "You need at least %d hours %d minutes" % (hours, mod_minutes)
                 }
-                template = JINJA_ENVIRONMENT.get_template('error_time_not_sufficient.html')
+                template = JINJA_ENVIRONMENT.get_template('CreateEvent.html')
                 self.response.write(template.render(template_values))
             else:
                 logging.info("Arrival time is %s, departure time needs to be %s" % (arrival_time, departure_time))
@@ -277,7 +289,11 @@ class CreateEvent(webapp2.RequestHandler):
 
                 event = service.events().insert(calendarId='primary', body=event).execute()
                 logging.info('Real event created: %s' % (event.get('htmlLink')))
-
+                template_values = {
+                    "user_email": user.email(),
+                }
+                template = JINJA_ENVIRONMENT.get_template('CreateEvent.html')
+                self.response.write(template.render(template_values))
 
 # [START app]
 app = webapp2.WSGIApplication([
