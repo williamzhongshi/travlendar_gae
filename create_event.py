@@ -6,6 +6,7 @@ import urllib
 import logging
 
 import re
+import urllib2
 
 import cloudstorage as gcs
 from entities_def import CredentialsM
@@ -112,8 +113,7 @@ class CreateEvent(webapp2.RequestHandler):
 
         ##
         # logging.info("Dummy")
-        # data = json.loads(self.request.body)
-        # logging.info("got json: %s" % data)
+
         user_obj = User.query(User.email == users.get_current_user().email()).fetch()[0]
         user = users.get_current_user()
         user_db = User.query(User.email == user.email()).fetch()[0]
@@ -129,8 +129,10 @@ class CreateEvent(webapp2.RequestHandler):
         depart_from_previous_dest = True
 
         logging.info("Event name: %s, address: %s, start; %s, stop: %s " % (event_name, address, txt_arrival_time, txt_stop_time))
-
-
+        # data = self.request.get('frmEvent')
+        data = json.load(self.request.body)
+        # logging.info("got json: %s" % data)
+        # # return
         # time hardcoded for now
         arrival_time_string = txt_arrival_time.decode('utf-8') + " %s" % time.tzname[0]
         arrival_test_time = time.strptime(arrival_time_string, "%Y/%m/%d %H:%M %Z")
@@ -213,6 +215,10 @@ class CreateEvent(webapp2.RequestHandler):
             departure_time = arrival_time - travel_time
             if departure_time < origin_time_stamp:
                 logging.info("ERROR!!! not enough time to travel to next location")
+                template_values = {
+                }
+                template = JINJA_ENVIRONMENT.get_template('error_time_not_sufficient.html')
+                self.response.write(template.render(template_values))
             else:
                 logging.info("Arrival time is %s, departure time needs to be %s" % (arrival_time, departure_time))
 

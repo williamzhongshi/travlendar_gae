@@ -156,8 +156,17 @@
                 var dateStartValue = $("#eventstart").datetimepicker('getValue');
                 var dateEndValue = $("#eventend").datetimepicker('getValue');
                 var travel = $('input[name=travel]:checked').val();
+                /*
                 var jsonString = '{ name: "' + name + '", address: "' + address + '",orig_address: "' + orig_address + '", eventStart: "' + dateStartValue + '", eventEnd: "' + dateEndValue + '",travel: "' + travel + '"}';
-                document.frmEvent.submit();
+                var url = "/create_event";
+                var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+                //open(http method, url)
+                xmlhttp.open("POST", url);
+                xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xmlhttp.send(JSON.stringify(jsonString));
+                */
+                document.getElementByName("frmEvent").submit();
+
             }
             else return false;
         }

@@ -1,7 +1,7 @@
 import logging
 import json
-import urlfetch
-# from google.appengine.api import urlfetch
+# import urlfetch
+from google.appengine.api import urlfetch
 
 
 def get_estimated_time(origin_in, destination_in, arrival_time, transit_mode="driving"):

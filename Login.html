@@ -1,30 +1,49 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head >
-    <title>Mini Project</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <title>Travlendar</title>
     <link rel="stylesheet" href="Content/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="Content/css/Site.css" />
-    <!-- Scripts -->
-     <script type="text/javascript" src="Content/js/bootstrap.min.js"></script>   
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- End of Scripts -->
+    <link rel="stylesheet" href="Content/css/bootstrap.css" />
+    <link rel="stylesheet" href="Content/css/jquery.datetimepicker.min.css" />
 </head>
 <body>
+    <script src="Content/js/jquery.js" ></script>
 
-  <!-- Header area begins -->
-        <header>
-        <div class="content-wrapper main-content clear-fix">
-            <div align="center">
-                <h1>
-                    Welcome to Connexus!
-                </h1>
-
-                <h2>Share the World!</h2>
+        <!-- Begin Header Content -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div >
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><img src="Content/img/calendar-icon.png" height="50px" width="50px" /></li>
+                    <li><h1 class="navbar-inverse navbar-text">Travlendar</h1></li>
+                </ul>
+            </div>
           <a href="{{ auth_url }}">Auth url</a>
             </div>
+    </nav>
+
+
+    <!--<div class="container-fluid"><h5 style="text-align:left">Login</h5></div>-->
+    <hr />
+    <!-- End of Header Content -->
+
+   <!-- Begin Main Content -->
+   <div class="container" >
+
+      <form id="form2" action="/CreateEvent" method="post" >
+
+        <!-- Begin Body Content -->
+       <div id="createEvent"  class=" col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" >
+
+          <div>
+               <br />
+               <br />
+               <br />
            </div>
     </header>
    <!-- End of Header area -->
@@ -37,8 +56,18 @@
             <!--<a href="trending">Trending</a>-->
             <!--<a href="geo_view">GeoView</a>-->
 
-             <!--<a href="#">Social</a>-->
+       <!-- Login Box -->
+       <div class="modal-dialog" id="login">
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header jumbotron">
+                    <h3 id="H1">Login</h3>
         </div>
+
+             <div class="modal-body">
+            <!-- Name-->
+            <div class="form"><a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a></div>
     </div>
       <table cellpadding="0px" cellspacing="0px" align="center">
         <tr>
@@ -59,7 +88,7 @@
                                             <!--<input type="text" id="txtPwd" name="txtPwd"  placeholder="Gmail Password"/>-->
                                         <!--</td>-->
                                     <!--</tr>-->
-                                    
+
                                     <tr>
                                         <td colspan="2" align="center">
                                             <br />
