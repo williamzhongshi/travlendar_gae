@@ -35,6 +35,12 @@ handlers:
 - url: /api/delete/.*  # This regex directs all routes to main.app
   script: event_management_api.app
 
+- url: /display_calendar
+  script: display_calendar.app
+
+- url: /plan_myday
+  script: plan_myday.app
+
 #- url: /blobstore/serviece
 #  script: blob_store_test.app
 # [END handlers]

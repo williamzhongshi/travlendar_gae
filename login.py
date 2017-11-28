@@ -204,9 +204,10 @@ class AuthPage(webapp2.RequestHandler):
             url_linktext = 'Login Using Google'
 
         template_values = {
-            'user': user,
-            'url': url,
-            'url_linktext': url_linktext,
+            # 'user': user,
+            # 'url': url,
+            # 'url_linktext': url_linktext,
+            'user_email': user.email(),
         }
 
         template = JINJA_ENVIRONMENT.get_template('DisplayCalendar.html')
