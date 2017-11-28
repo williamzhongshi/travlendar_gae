@@ -23,6 +23,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class Preference(webapp2.RequestHandler):
     def get(self):
         template_values = {
+            'error_type': 'modal'
             # 'url': decorator.authorize_url(),
             # 'has_credentials': decorator.has_credentials()
         }
@@ -59,6 +60,7 @@ class Preference(webapp2.RequestHandler):
 
         template_values = {
             'user': user,
+            'error_type': 'modal'
         }
 
         template = JINJA_ENVIRONMENT.get_template('UserPreferences.html')
