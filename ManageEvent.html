@@ -81,25 +81,17 @@
                 <div class="modal-header jumbotron">
                     <h3 id="addModalLabel">Manage Events</h3>
                 </div>
+                    {% for event in events%}
                 <div class="modal-body">
-                    <!-- First row-->
-                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a  onclick="PopulateEvent(1); return false;" href="#"> Select </a></div>
-                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#"> Delete </a></div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Event Name </div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Date/Time </div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Location </div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Travel Option</div>
-                    <!-- Second Row -->
-
-                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#">Select </a></div>
-                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="#"> Delete </a></div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Event Name </div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Date/Time </div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Location </div>
-                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > Travel Option</div>
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a  onclick="PopulateEvent('{{event.id}}'); return false;" href="#"> Select </a></div>
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="http://localhost:8080/api/delete/{{event.id}}/{{email}}"> Delete </a></div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.summary}} </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.start.dateTime}} </div>
+                    <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.location}} </div>
 
                 </div>
                 <div class="modal-footer">&nbsp;</div>
+                    {% endfor %}
             </div>
       </div>
 
@@ -248,33 +240,36 @@
 
 
         function PopulateEvent(id) {
-            if (id == 1) {
 
-                var url = "submitURL/Eventdetails?id=" + id;
+                var url = "http://localhost:8080/api/getdetails/"+id+"/cheng1987hbk@gmail.com";
                 var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+                var eventName = 'Empty';
+                var eventLocation = '111';
+                var startTime = '22';
+                var endTime = '33';
                 //open(http method, url)
                 xmlhttp.open("GET", url);
-                xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xmlhttp.setRequestHeader("Content-Type", "application/json");
                 xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState === 4 && xhr.status === 200) {
+                    if (this.readyState === 4 && this.status === 200) {
                         var json = JSON.parse(xmlhttp.responseText);
 
-                        var eventName = json.name;
-                        var eventLocation = json.address;
-                        var startTime = json.startTime;
-                        var endTime = json.endTime;
-                        var travelType = json.travel;
+                        eventName = json.summary;
+                        eventLocation = json.location;
+                        startTime = json.start.dateTime;
+                        endTime = json.end.dateTime;
+                         $("#txtEventName").val(json.summary);
+                 $("#txtAddress").val(eventLocation);
+                $("#eventstart").val(startTime);
+                $("#eventend").val(endTime);
+                        
                     }
                 };
 
 
                 xmlhttp.send();
 
-                $("#txtEventName").val(eventName);
-                $("#txtAddress").val(eventLocation);
-                $("#eventstart").val(startTime);
-                $("#eventend").val(endTime);
-            }
+               
         }
     </script>
 
