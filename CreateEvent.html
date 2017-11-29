@@ -37,21 +37,28 @@
         </div>
     </nav>
 
-    <div class="container-fluid" style="flex-align:center">
-        <ul class="nav navbar-nav">
-                    <li><a href="DisplayCalendar.html" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a></li>
-                    <li><a href="ManageEvent.html" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a></li>
+    <!--<div class="container-fluid" style="flex-align:center">-->
+        <!--<ul class="nav navbar-nav">-->
+                    <!--<li><a href="DisplayCalendar.html" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a></li>-->
+                    <!--<li><a href="ManageEvent.html" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a></li>-->
 
-                    <li><a href="#" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a></li>
+                    <!--<li><a href="#" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a></li>-->
 
-                    <li><a href="UserPreferences.html" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a></li>
-                    <li><a href="PlanMyDay.html" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a></li>
-                </ul>
+                    <!--<li><a href="UserPreferences.html" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a></li>-->
+                    <!--<li><a href="PlanMyDay.html" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a></li>-->
+                <!--</ul>-->
+        <!---->
 
-    </div>
+    <!--</div>-->
     <div class="container-fluid"><h5 style="text-align:left">Create New Event</h5></div>
     <hr />
     <!-- End of Header Content -->
+    <div>
+            <input type="button"  value="Create New Event" class="button orange float-right" onclick="window.location.href = 'create_event';"/>
+            <input type="button"  value="Mangage Event" class="button orange float-right" onclick="window.location.href = 'manage_event';"/>
+            <input type="button"  value="Plan My Day" class="button orange float-right" onclick="window.location.href = 'plan_myday';"/>
+            <input type="button"  value="Display Calendar" class="button orange float-right" onclick="window.location.href = 'display_calendar';"/>
+            <input type="button"  value="User Preference" class="button orange float-right" onclick="window.location.href = 'preference';"/></div>
 
      <div class="container">
     <form id="frmEvent" action="/create_event" method="post" >

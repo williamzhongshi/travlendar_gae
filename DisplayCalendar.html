@@ -34,18 +34,18 @@
         </div>
     </nav>
 
-    <div class="container-fluid" style="flex-align:center">
-        <ul class="nav navbar-nav">
-                    <li><a href="#" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a></li>
-                    <li><a href="ManageEvent.html" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a></li>
-                    
-                    <li><a href="create_event" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a></li>
-                    
-                    <li><a href="preference" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a></li>
-                    <li><a href="PlanMyDay.html" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a></li>
-                </ul>
-        
-    </div>
+    <!--<div class="container-fluid" style="flex-align:center">-->
+        <!--<ul class="nav navbar-nav">-->
+                   <!--<a href="#" id="A4"><span class="glyphicon glyphicon-log-in "></span>Calendar</a>-->
+                   <!--<a href="ManageEvent.html" id="A1"><span class="glyphicon glyphicon-log-in "></span>Manage Event</a>-->
+
+                   <!--<a href="create_event" id="A2"><span class="glyphicon glyphicon-log-out "></span>Create Event</a>-->
+
+                   <!--<a href="preference" id="A3"><span class="glyphicon glyphicon-log-out "></span>User Preferences</a>-->
+                   <!--<a href="PlanMyDay.html" id="A5"><span class="glyphicon glyphicon-log-out "></span>Plan My Day</a>-->
+                <!--</ul>-->
+        <!---->
+    <!--</div>-->
     <div class="container-fluid"><h5 style="text-align:left">Display Calendar</h5></div>
     <hr />
     <!-- End of Header Content -->
@@ -57,8 +57,12 @@
         <!--<a href="searchstream" >Search</a>-->
         <!--<a href="trending">Trending</a>-->
         <!--<a href="geo_view">GeoView</a>-->
-       <div class="col-md-11 col-centered center-block"><input type="button"  value="Create New Event" class="button orange float-right" onclick="window.location.href = 'create_event';"/></div>
-       <div class="col-md-11 col-centered center-block"><input type="button"  value="Plan My Day " class="button orange float-right" onclick="window.location.href = 'plan_myday';"/></div>
+       <div>
+            <input type="button"  value="Create New Event" class="button orange float-right" onclick="window.location.href = 'create_event';"/>
+            <input type="button"  value="Mangage Event" class="button orange float-right" onclick="window.location.href = 'manage_event';"/>
+            <input type="button"  value="Plan My Day" class="button orange float-right" onclick="window.location.href = 'plan_myday';"/>
+            <input type="button"  value="Display Calendar" class="button orange float-right" onclick="window.location.href = 'display_calendar';"/>
+            <input type="button"  value="User Preference" class="button orange float-right" onclick="window.location.href = 'preference';"/></div>
 
         <div class="col-md-11 col-centered center-block">&nbsp;</div>
     <div id="divifm" class="container">
