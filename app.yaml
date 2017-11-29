@@ -32,6 +32,9 @@ handlers:
 - url: /manage_event_delete.*
   script: manage_event.app
 
+- url: /manage_event_modify.*
+  script: manage_event.app
+
 - url: /api/getdetails/.*  # This regex directs all routes to main.app
   script: event_management_api.app
 
