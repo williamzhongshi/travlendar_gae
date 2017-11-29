@@ -84,7 +84,7 @@
                     {% for event in events%}
                 <div class="modal-body">
                     <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a  onclick="PopulateEvent('{{event.id}}'); return false;" href="#"> Select </a></div>
-                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="http://localhost:8080/api/delete/{{event.id}}/{{email}}"> Delete </a></div>
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="http://localhost:8080/manage_event_delete?event_id={{event.id}}"> Delete </a></div>
                     <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.summary}} </div>
                     <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.start.dateTime}} </div>
                     <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.location}} </div>
@@ -95,7 +95,7 @@
             </div>
       </div>
 
-    <form id="frmEvent" method="post" >
+    <form id="frmEvent" method="post" action="/manage_event_modify" >
 
         <div class="modal-dialog" >
             <!-- Modal content-->
@@ -108,21 +108,23 @@
              <div class="modal-body">
             <!-- Name-->
             <div class="form">Event Name</div>
-            <div class="form"><input type="text" id="txtEventName" /></div>
+            <div class="form"><input name="eventName" type="text" id="txtEventName" /></div>
 
             <!-- Location -->
             <div class="form">Location</div>
-            <div class="form"><input type="text" id="txtAddress" style="width: 500px" />
+            <div class="form"><input name="location" type="text" id="txtAddress" style="width: 500px" />
             </div>
 
             <!-- Start Day/Time-->
             <div class="form">Start Time</div>
-            <div class="form"><input type="text" id="eventstart" />
+            <div class="form"><input type="text" id="eventstart" name="startTime"/>
             </div>
 
             <!-- End Day/Time-->
             <div class="form">End Time</div>
-            <div class="form"><input type="text" id="eventend" /></div>
+            <div class="form"><input type="text" id="eventend" name="endTime" /></div>
+
+            <input type="hidden" name="eventID" id="eventID"/>
 
             <!-- Travel Options-->
             <div class="form">Travelling By</div>
@@ -137,7 +139,7 @@
         </div>
 
 
-        <div class="col-md-12 col-centered center-block"><input type="button" value="Modify Event"  class="button orange float-right" onclick="SendJSON()" /></div>
+        <div class="col-md-12 col-centered center-block"><input type="submit" value="Modify Event"  class="button orange float-right"/></div>
 
     </form>
 
@@ -176,10 +178,10 @@
 
                 var jsonString = '{ name: "' + name + '", address: "' + address + '", eventStart: "' + dateStartValue + '", eventEnd: "' + dateEndValue + '",travel: "' + travel + '"}';
 
-                var url = "jsonSubmit.aspx";
+                var url = "#";
                 var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
                 //open(http method, url)
-                xmlhttp.open("POST", url);
+                xmlhttp.open("PATCH", url);
                 xmlhttp.setRequestHeader("Content-Type", "application/json");
                 xmlhttp.send(JSON.stringify(jsonString));
 
@@ -262,6 +264,7 @@
                  $("#txtAddress").val(eventLocation);
                 $("#eventstart").val(startTime);
                 $("#eventend").val(endTime);
+                $("#eventID").val(json.id);
                         
                     }
                 };
