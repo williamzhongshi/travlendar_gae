@@ -7,6 +7,7 @@ import logging
 
 import re
 import urllib2
+import dateutil.parser
 
 import cloudstorage as gcs
 from entities_def import CredentialsM
@@ -22,6 +23,7 @@ from google.appengine.api import memcache
 from google.appengine.api import app_identity, mail, users
 from google.appengine.ext import ndb
 from google.appengine.api import urlfetch
+from datetime import  timedelta, tzinfo
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 from oauth2client import client
@@ -93,6 +95,8 @@ def get_list_time(display):
         return (change_time(start.replace(hour=0,minute=0,second=0)), change_time(end.replace(hour=23,minute=59,second=59)))
     elif display == 'Day':
         return (change_time(now.replace(hour=0,minute=0,second=0)), change_time(now.replace(hour=23,minute=59,second=59)))
+    elif display is None:
+        return (change_time(now.replace(hour=0,minute=0,second=0)), change_time(now.replace(hour=23,minute=59,second=59)))
     
 
 class ManageEvent(webapp2.RequestHandler):
@@ -130,8 +134,77 @@ class ManageEvent(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('ManageEvent.html')
         self.response.write(template.render(template_values))
 
+class DeleteEvent(webapp2.RequestHandler):
+    def get(self):
+        event_id = self.request.get('event_id')
+        email = users.get_current_user().email()
+        credentials = get_credentials(email)
+
+        http = credentials.authorize(httplib2.Http())
+        service = discovery.build('calendar', 'v3', http=http)
+
+        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+        event = service.events().get(calendarId='primary', eventId=event_id).execute()
+
+
+        dt = dateutil.parser.parse(event['end']['dateTime'])
+        be = dateutil.parser.parse(event['start']['dateTime']) - timedelta(hours = 24)
+
+        origin_start_time_string = event['start']['dateTime']
+        logging.info("find event!!!!!:" + str(event))
+        service.events().delete(calendarId='primary', eventId=event_id).execute()
+
+        travel_list_old = service.events().list(
+                calendarId='primary', timeMin=now, timeMax=event['end']['dateTime'], singleEvents=True,
+                orderBy='startTime').execute()
+        events_travel = travel_list_old.get('items', [])
+        logging.info("old :" + str(events_travel))
+
+        temp_list = []
+        
+        for item in events_travel:
+            logging.info("%%%%%%%%%%%%%%%item:" + str(item) + origin_start_time_string)
+            
+            logging.info("item orig:" + origin_start_time_string)
+            if item['summary'].startswith('Travel to') and item['end']['dateTime'].startswith(origin_start_time_string):
+                logging.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#########delete:" + str(item))
+                service.events().delete(calendarId='primary', eventId=item['id']).execute()
+            else:
+                temp_list.append(item)
+
+        email = users.get_current_user().email()
+        user_obj = User.query(User.email == email).fetch()[0]
+
+        display = user_obj.display
+        credentials = get_credentials(email)
+
+        http = credentials.authorize(httplib2.Http())
+        service = discovery.build('calendar', 'v3', http=http)
+
+        (start_time, end_time) = get_list_time(display)
+        logging.info("start " + start_time)
+        logging.info("end " + end_time)
+        logging.info("display " + display)
+        logging.info("now " + str(datetime.datetime.today()))
+        logging.info("now " + str(datetime.datetime.now()))
+
+        event_list = service.events().list(
+                calendarId='primary', timeMin=start_time, timeMax=end_time, singleEvents=True,
+                orderBy='startTime').execute()
+        logging.info("event_list" + str(event_list))
+
+
+        for e in event_list['items']:
+            logging.info("event:" + e['summary'])
+
+        template_values = {
+                'events': event_list['items'],
+                'email':email,
+        }
+        template = JINJA_ENVIRONMENT.get_template('ManageEvent.html')
+        self.response.write(template.render(template_values))
 
 app = webapp2.WSGIApplication([
     ('/manage_event', ManageEvent),
-
+    ('/manage_event_delete', DeleteEvent)
 ], debug=True)
