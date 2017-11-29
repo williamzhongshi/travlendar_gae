@@ -70,6 +70,8 @@ MAPS_KEY = 'AIzaSyA8kKYiHIDlMbXvLmOBA8W2r1W9FVA5Blg'
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 
 flow = flow_from_clientsecrets('./client_secret.json', scope='https://www.googleapis.com/auth/calendar', redirect_uri='http://localhost:8080/auth')
+# flow = flow_from_clientsecrets('./client_secret.json', scope='https://www.googleapis.com/auth/calendar', redirect_uri='https://travlendar-185302.appspot.com/auth')
+
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
 
@@ -77,6 +79,7 @@ class MainPage(webapp2.RequestHandler):
         user = users.get_current_user()
         flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('./client_secret.json' , scopes=['https://www.googleapis.com/auth/calendar'])
         flow.redirect_uri='http://localhost:8080/auth'
+        #flow.redirect_uri = 'https://travlendar-185302.appspot.com/auth'
         #auth_uri = flow.step1_get_authorize_url()
         auth_uri, state = flow.authorization_url(access_type='offline',include_granted_scopes='true')
         if user:
@@ -123,7 +126,7 @@ class MainPage(webapp2.RequestHandler):
                 # https://developers.google.com/google-apps/calendar/quickstart/python
                 # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
                 # stored credentials.
-
+            self.redirect(auth_uri)
 
         else:
             url = users.create_login_url(self.request.uri)
