@@ -136,15 +136,17 @@ class CreateEvent(webapp2.RequestHandler):
         # logging.info("got json: %s" % data)
         # # return
         # time hardcoded for now
-        arrival_time_string = txt_arrival_time.decode('utf-8') + " %s" % time.tzname[0]
+        logging.info("tz name:%s " % time.tzname[0])
+
+        arrival_time_string = txt_arrival_time + " UTC"# ""%s" % time.tzname[0]
         arrival_test_time = time.strptime(arrival_time_string, "%Y/%m/%d %H:%M %Z")
 
-        stop_time_string = txt_stop_time.decode('utf-8') + " %s" % time.tzname[0]
+        stop_time_string = txt_stop_time + " UTC" # "" %s" % time.tzname[0]
         stop_test_time = time.strptime(stop_time_string, "%Y/%m/%d %H:%M %Z")
 
         logging.info("%s %s" % (arrival_time_string, stop_time_string))
-        arrival_time = calendar.timegm(arrival_test_time)
-        stop_time = calendar.timegm(stop_test_time)
+        arrival_time = calendar.timegm(arrival_test_time) + 3600*6
+        stop_time = calendar.timegm(stop_test_time) + 3600*6
 
         cred_list = CredentialsM.query(CredentialsM.user_email == user.email()).fetch()
         logging.info("cred list len %d " % len(cred_list))
@@ -186,10 +188,11 @@ class CreateEvent(webapp2.RequestHandler):
                 origin_address = previous_event['location']
                 origin_stop_time = previous_event['end']['dateTime']
                 t = re.search("(\d+-\d+-\d+T\d+:\d+:\d+)([+-]\d+):(\d+)", origin_stop_time)
-                origin_stop_time = t.group(1) + " %s" % time.tzname[0]
+                # logging.info("tz name:%s " % time.tzname)
+                origin_stop_time = t.group(1) + " UTC"#"" %s" % time.tzname[0]
                 logging.info("Found stop time %s" % origin_stop_time)
 
-                origin_time_stamp = int(datetime.datetime.strptime(origin_stop_time, "%Y-%m-%dT%H:%M:%S %Z").strftime("%s"))
+                origin_time_stamp = int(datetime.datetime.strptime(origin_stop_time, "%Y-%m-%dT%H:%M:%S %Z").strftime("%s")) + 3600*6
                 logging.info("Found previous event at %s, end at %s aka ts %d" % (origin_address, origin_stop_time, origin_time_stamp))
             #    else:
             #        origin_address = default_address
@@ -234,9 +237,9 @@ class CreateEvent(webapp2.RequestHandler):
             else:
                 logging.info("Arrival time is %s, departure time needs to be %s" % (arrival_time, departure_time))
 
-                departure_time_string = datetime.datetime.fromtimestamp(departure_time).strftime('%Y-%m-%dT%H:%M:00-06:00')
-                arrival_time_string = datetime.datetime.fromtimestamp(arrival_time).strftime('%Y-%m-%dT%H:%M:00-06:00')
-                end_time_string = datetime.datetime.fromtimestamp(stop_time).strftime('%Y-%m-%dT%H:%M:00-06:00')
+                departure_time_string = datetime.datetime.fromtimestamp(departure_time - 3600*6).strftime('%Y-%m-%dT%H:%M:00-06:00')
+                arrival_time_string = datetime.datetime.fromtimestamp(arrival_time - 3600*6).strftime('%Y-%m-%dT%H:%M:00-06:00')
+                end_time_string = datetime.datetime.fromtimestamp(stop_time - 3600*6).strftime('%Y-%m-%dT%H:%M:00-06:00')
                 logging.info("String departure time is %s" % departure_time_string)
 
                 event = {
