@@ -82,6 +82,7 @@ class MainPage(webapp2.RequestHandler):
         #flow.redirect_uri = 'https://travlendar-185302.appspot.com/auth'
         #auth_uri = flow.step1_get_authorize_url()
         auth_uri, state = flow.authorization_url(access_type='offline',include_granted_scopes='true')
+        auth_uri = str(auth_uri)
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
