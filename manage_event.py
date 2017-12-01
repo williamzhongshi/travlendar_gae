@@ -130,6 +130,7 @@ class ManageEvent(webapp2.RequestHandler):
         template_values = {
                 'events': event_list['items'],
                 'email':email,
+                "error_type": "modal"
         }
         template = JINJA_ENVIRONMENT.get_template('ManageEvent.html')
         self.response.write(template.render(template_values))
