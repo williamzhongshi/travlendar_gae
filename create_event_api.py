@@ -36,15 +36,15 @@ def serializeResult(result):
    re = {}
    re['body'] = result
 
-@app.route('/api/create_event/<name>', methods=['GET'])
+@app.route('/api/create_event/<name>/', methods=['GET'])
 def get(name=None):
     logging.info("got name %s" % name)
     #req_evt = request.get_json()['event']
 
 
-@app.route('/api/create_event/<name>', methods=['POST'])
-def post(name=None):
-    logging.info("got name %s" % name)
+@app.route('/api/create_event/<user_email>', methods=['POST'])
+def post(user_email=None):
+    logging.info("got email %s" % user_email)
     #logging.info("got request %s " % request.values)
     logging.info("got request %s " % request.get_data())
     whole_json = request.get_json()
@@ -59,8 +59,8 @@ def post(name=None):
    # user_db = User.query(User.email == user.email()).fetch()[0]
    # user_db = User.query(User.email == "williamzhongshi@gmail.com").fetch()[0]
 
-    tmp_email = "williamzhongshi@gmail.com"
-    user_db = User.query(User.email == tmp_email).fetch()[0]
+    #tmp_email = "williamzhongshi@gmail.com"
+    user_db = User.query(User.email == user_email).fetch()[0]
 
     event_name = request.get_json()['name']
     address = request.get_json()['address']
@@ -82,7 +82,7 @@ def post(name=None):
     stop_time = calendar.timegm(stop_test_time) + 3600*6
     logging.info("arrival stop timestamp %d %d" % (arrival_time, stop_time))
 
-    cred_list = CredentialsM.query(CredentialsM.user_email == tmp_email).fetch()
+    cred_list = CredentialsM.query(CredentialsM.user_email == user_email).fetch()
     logging.info("cred list len %d " % len(cred_list))
     if len(cred_list) != 0:
         cred = cred_list[0]
@@ -196,31 +196,31 @@ def post(name=None):
             logging.info("Adding event %s " % event)
             event = service.events().insert(calendarId='primary', body=event).execute()
             logging.info('Travel event created: %s' % (event.get('htmlLink')))
-            event = {
-                'summary': event_name,
-                'location': address,
-                'description': 'test',
-                'start': {
-                    'dateTime': arrival_time_string,
-                    'timeZone': 'America/Chicago',
-                },
-                'end': {
-                    'dateTime': end_time_string,
-                    'timeZone': 'America/Chicago',
-                },
-                'reminders': {
-                    'useDefault': False,
-                    'overrides': [
-                        {'method': 'email', 'minutes': 24 * 60},
-                        {'method': 'popup', 'minutes': 10},
-                    ],
-                },
-            }
-
-            logging.info("Adding event %s " % event)
-
-            event = service.events().insert(calendarId='primary', body=event).execute()
-            logging.info('Real event created: %s' % (event.get('htmlLink')))
+            # event = {
+            #     'summary': event_name,
+            #     'location': address,
+            #     'description': 'test',
+            #     'start': {
+            #         'dateTime': arrival_time_string,
+            #         'timeZone': 'America/Chicago',
+            #     },
+            #     'end': {
+            #         'dateTime': end_time_string,
+            #         'timeZone': 'America/Chicago',
+            #     },
+            #     'reminders': {
+            #         'useDefault': False,
+            #         'overrides': [
+            #             {'method': 'email', 'minutes': 24 * 60},
+            #             {'method': 'popup', 'minutes': 10},
+            #         ],
+            #     },
+            # }
+            #
+            # logging.info("Adding event %s " % event)
+            #
+            # event = service.events().insert(calendarId='primary', body=event).execute()
+            logging.info('Real event will be created by phone') # created: %s' % (event.get('htmlLink')))
 
     else:
         logging.info("credential not found")
