@@ -95,7 +95,7 @@
                     {% for event in events%}
                 <div class="modal-body">
                     <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a  onclick="PopulateEvent('{{event.id}}'); return false;" href="#"> Select </a></div>
-                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="http://localhost:8080/manage_event_delete?event_id={{event.id}}"> Delete </a></div>
+                    <div   class="col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > <a href="https://travlendar-185302.appspot.com/manage_event_delete?event_id={{event.id}}"> Delete </a></div>
                     <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.summary}} </div>
                     <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.start.dateTime}} </div>
                     <div   class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 "  > {{event.location}} </div>
@@ -254,7 +254,7 @@
 
         function PopulateEvent(id) {
 
-            var url = "http://localhost:8080/api/getdetails/"+id+"/"+"{{email}}";
+            var url = "https://travlendar-185302.appspot.com/api/getdetails/"+id+"/"+"{{email}}";
                 var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
                 var eventName = 'Empty';
                 var eventLocation = '111';
