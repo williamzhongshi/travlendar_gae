@@ -107,6 +107,8 @@ class ManageEvent(webapp2.RequestHandler):
 
         display = user_obj.display
         credentials = get_credentials(email)
+        if display is None:
+            display = 'Month'
 
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http=http)
@@ -177,15 +179,17 @@ class DeleteEvent(webapp2.RequestHandler):
         user_obj = User.query(User.email == email).fetch()[0]
 
         display = user_obj.display
+        if display is None:
+            display = 'Month'
         credentials = get_credentials(email)
 
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http=http)
 
+        logging.info("display " + display)
         (start_time, end_time) = get_list_time(display)
         logging.info("start " + start_time)
         logging.info("end " + end_time)
-        logging.info("display " + display)
         logging.info("now " + str(datetime.datetime.today()))
         logging.info("now " + str(datetime.datetime.now()))
 
@@ -201,6 +205,7 @@ class DeleteEvent(webapp2.RequestHandler):
         template_values = {
                 'events': event_list['items'],
                 'email':email,
+                "error_type": "modal"
         }
         template = JINJA_ENVIRONMENT.get_template('ManageEvent.html')
         self.response.write(template.render(template_values))
@@ -299,7 +304,6 @@ class PatchEvent(webapp2.RequestHandler):
         trip_mode = 'fastest'
         if trip_mode == "fastest":
             travel_options = user_db.travel_option
-            method_list = []
             for i in travel_options:
                 logging.info("travel option input got %s" % (i.decode('utf-8')))
                 method_list.append(mode_dict.get(i.decode('utf-8')))
@@ -378,6 +382,8 @@ class PatchEvent(webapp2.RequestHandler):
 
         display = user_obj.display
         credentials = get_credentials(email)
+        if display is None:
+            display = 'Month'
 
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http=http)
@@ -401,6 +407,7 @@ class PatchEvent(webapp2.RequestHandler):
         template_values = {
                 'events': event_list['items'],
                 'email':email,
+                "error_type": "modal"
         }
         template = JINJA_ENVIRONMENT.get_template('ManageEvent.html')
         self.response.write(template.render(template_values))
